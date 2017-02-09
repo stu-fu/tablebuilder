@@ -1,0 +1,762 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/normalize.css">
+
+        <style type="text/css">
+        html {font-size: 62.5%;}
+          body { padding:30px; }
+
+          /*table { 
+            border:1px solid #333;   
+            margin:20px 0; padding:0; 
+            transition:all .3s;
+          }
+
+          th { 
+            border-bottom:1px solid #666; border-right:1px solid #666;   
+            padding:5px; 
+            transition:all .3s;
+          }
+
+          td { 
+            padding:5px; 
+            border-bottom:1px solid #ccc; border-right:1px solid #ccc;  
+            transition:all .3s;
+          }*/
+
+          .highlight-focus .cell { opacity:0.5; }
+          .highlight-focus .cell.highlighted { opacity:1; }
+
+          .button {
+            font-weight: 500;
+            font-style: normal;
+            border: 0;
+            border-radius: .4rem;
+            cursor: pointer;
+            display: inline-block;
+            background:#0277bd;
+            color:#fff;
+            font-size: .9rem;
+            height: 4.2rem;
+            letter-spacing: .04rem;
+            line-height: .01rem;
+            outline: none;
+            padding: 0 2rem;
+            text-transform: uppercase;
+            -webkit-transition: all 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap
+
+          }
+
+          .columns {
+            display:flex;
+            transition:all .3s;
+          } 
+          .column { padding:6px; border-bottom:2px solid #333; }
+
+          .row { padding:0; }
+          .row-cells { display:flex; }
+          .row-cells a { font-size:.8em; }
+
+          .highlighted { background:#ccc; border-bottom:1px solid lightblue; border-right:1px solid lightblue; }
+          
+          .cell { cursor:pointer; background:#fff; padding:5px; border:1px solid #ccc; box-shadow:0 0 0 #333; transition:all .3s; }
+          .cell:hover { border:1px solid lightblue; background:#ddd; box-shadow:0 0 3px #333; }
+          .cell.highlighted { background:lightgreen; }
+          input[type="text"] {
+            padding:7px;
+            transition:all .3s;
+          }
+
+          input[type="text"]:disabled {
+            background:transparent;
+            border:2px solid transparent;
+            cursor:pointer;
+            visibility:hidden;
+          }
+
+          .table-builder {
+            background:#eee; padding:30px;
+            transition:all .3s;
+            max-width:100%; overflow-y:auto; 
+          }
+
+          .row:last-child .merge-down { display:none !important;  }
+
+          table {
+              font-size: 1.1rem;
+              letter-spacing: .03rem;
+              line-height: 1.5
+          }
+
+          table .left {
+              padding: 0 0 0 2.4rem
+          }
+
+          table .right {
+              text-align: right
+          }
+
+          table .center {
+              text-align: center
+          }
+
+          table .data {
+              padding: 0 calc(2.4rem + 2rem) 0 2.4rem
+          }
+
+          table svg {
+              fill: #039be5
+          }
+
+          table .data-icon {
+              display: block;
+              height: 1.4rem;
+              position: absolute;
+              width: 1.4rem;
+              right: 0;
+              top: 2.4rem;
+              -webkit-transform: translateY(-0.2rem);
+              -ms-transform: translateY(-0.2rem);
+              transform: translateY(-0.85rem)
+          }
+
+          th, td {
+              font-size: 1.1rem;
+              height: 4.8rem;
+              letter-spacing: .03rem;
+              line-height: 1.5;
+              vertical-align: middle
+          }
+
+          th {
+              background: #e31b23;
+              border-bottom: 0.1rem solid #f5f5f5;
+              color: #fff;
+              font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+              font-weight: 500;
+              font-style: normal;
+              letter-spacing: -.03rem;
+              padding: 0 2.4rem;
+              text-align: left
+          }
+
+          tr {
+              -webkit-transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+              transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1)
+          }
+
+          td {
+              border-bottom: 0.1rem solid rgba(0, 0, 0, 0.12);
+              text-align: left;
+              font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+              font-weight: 400;
+              font-style: normal
+          }
+
+          td:hover {
+              color: #0277bd;
+              cursor: pointer
+          }
+
+          td:hover svg {
+              fill: #0277bd
+          }
+
+          .responsive-table-container {
+              width: 100%
+          }
+
+          .responsive-table-container .responsive-table {
+              background: #fff;
+              display: inline-block;
+              margin-right: -.3rem
+          }
+
+          .responsive-table-container td, .responsive-table-container th {
+              padding-left: 4.8rem
+          }
+
+          .responsive-table-container th {
+              min-width: 10rem;
+              padding-right: 0;
+              white-space: nowrap
+          }
+
+          .responsive-table-container .pinned-columns th:first-child, .responsive-table-container .pinned-columns td:first-child {
+              padding-left: 2.4rem
+          }
+
+          .responsive-table-container .pinned-columns th:last-child, .responsive-table-container .pinned-columns td:last-child {
+              padding-right: 9.6rem
+          }
+
+          .responsive-table-container .scrollable-columns td {
+              padding-right: 3rem;
+              text-align: right
+          }
+
+          .responsive-table-container .scrollable-columns td .data-icon {
+              right: 1rem
+          }
+
+          .responsive-table-container .scrollable-columns td:last-child {
+              padding-right: 4.8rem
+          }
+
+          .responsive-table-container .scrollable-columns td:last-child .data-icon {
+              right: 2.4rem
+          }
+
+          .responsive-table-container .scrollable-columns th:last-child {
+              padding-right: 2.4rem
+          }
+
+          .row-hover td {
+              background: rgba(0, 0, 0, 0.04)
+          }
+
+          .pinned-columns {
+              z-index: 2
+          }
+
+          .is-scrollable .pinned-columns::after {
+              box-shadow: inset -0.6rem -0.1rem 0.2rem -0.2rem rgba(0, 0, 0, 0.24);
+              content: '';
+              height: 100%;
+              position: absolute;
+              right: 0;
+              top: 0;
+              -webkit-transform: rotate(180deg) translateX(-0.5rem);
+              -ms-transform: rotate(180deg) translateX(-0.5rem);
+              transform: rotate(180deg) translateX(-0.5rem);
+              width: .6rem
+          }
+
+          .scrollable-columns {
+              overflow-x: auto;
+              overflow-y: hidden;
+              position: absolute;
+              top: 0
+          }
+
+          .is-ie9 .responsive-table {
+              margin-right: -.3rem
+          }
+
+          .simple-table th {
+              box-shadow: none
+          }
+
+          .simple-table tr {
+              -webkit-transition: all .25s;
+              transition: all .25s
+          }
+
+          .simple-table tr:hover td {
+              background: rgba(0, 0, 0, 0.04)
+          }
+
+          .simple-table th:first-child, .simple-table td:first-child {
+              padding-right: 4.8rem
+          }
+
+          .simple-table th:nth-child(2), .simple-table td:nth-child(2) {
+              padding-right: 4.8rem
+          }
+
+          .simple-table th:nth-child(3), .simple-table td:nth-child(3) {
+              padding-left: 0
+          }
+
+          .simple-table .category {
+              padding: 0
+          }
+
+          .dual-axis-table th {
+              padding-right: 3rem
+          }
+
+          .dual-axis-table .noborder {
+              border: 0;
+              box-shadow: none
+          }
+
+          .dual-axis-table .nobackground {
+              background: none;
+              color: #424242
+          }
+
+          .dual-axis-table .y-axis-th {
+              box-shadow: inset 0 -0.1rem 0 0 rgba(255, 255, 255, 0.3)
+          }
+
+          .dual-axis-table .data {
+              background: rgba(0, 0, 0, 0.02)
+          }
+
+          .row-hover td {
+              background: rgba(0, 0, 0, 0.03)
+          }
+
+          .pinned-columns .dual-axis-table .row-hover td {
+              background: rgba(0, 0, 0, 0.02)
+          }
+
+          .pinned-columns .dual-axis-table .row-hover td:first-child {
+              background: rgba(0, 0, 0, 0.03)
+          }
+
+          .scrollable-columns .dual-axis-table .row-hover td {
+              background: rgba(0, 0, 0, 0.08)
+          }
+
+          .scrollable-columns .dual-axis-table .hovered-column {
+              background: rgba(0, 0, 0, 0.08)
+          }
+
+          .has-note:hover::after {
+              background: #616161;
+              bottom: -3.36rem;
+              color: #fff;
+              content: 'Exclusion text goes here lorem ipsum dolor';
+              font-size: 1.2rem;
+              left: -1.2rem;
+              padding: .8rem;
+              position: absolute;
+              text-align: center;
+              width: 30rem;
+              z-index: 10
+          }
+
+          .has-note.note-1::before {
+              border: 0;
+              content: '1';
+              position: absolute;
+              right: 1rem;
+              top: 0
+          }
+
+          .has-note.note-2::before {
+              border: 0;
+              content: '2';
+              position: absolute;
+              right: 1rem;
+              top: 0
+          }
+
+          .has-note.note-3::before {
+              border: 0;
+              content: '3';
+              position: absolute;
+              right: 1rem;
+              top: 0
+          }
+
+          .table-notes {
+              display: block;
+              left: 19.2rem;
+              min-height: 10rem;
+              top: 1.7rem
+          }
+
+          .table-notes .table-note {
+              color: rgba(0, 0, 0, 0.87);
+              margin-bottom: .6rem
+          }
+
+          .versions-table {
+              margin-top: 2.5rem
+          }
+
+          .versions-table .responsive-table-container {
+              max-height: 0;
+              overflow: hidden
+          }
+
+          .versions-table .responsive-table-container.active {
+              max-height: none
+          }
+
+          .view-all-versions-button {
+              color: #039be5;
+              padding: 0 0 1.5rem
+          }
+
+          .archive-table th {
+              background: rgba(0, 0, 0, 0.12);
+              color: rgba(0, 0, 0, 0.87);
+              font-style: normal;
+              font-weight: 500;
+              letter-spacing: -.04rem;
+              line-height: 1.45
+          }
+
+          .archive-table .clickable {
+              color: #039be5;
+              text-decoration: underline
+          }
+
+          .controls { display:none; padding:15px; background:#ddd; margin-top:15px; }
+        </style>
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="table-builder">
+          <button class="add-col button">Add Column</button>
+          <button class="add-row button">Add Row</button>
+
+          <div class="controls">
+            <button class="button merge-group">Merge Highlighted</button>
+          </div>  
+
+          <div class="columns">
+            <div class="column" id="col1">
+              <p>Column 1</p>
+              <input type="text" data-col="1" />
+            </div>
+          </div>
+
+          <div class="rows">
+            <div class="row" id="row1">
+              <!--<p>Row 1</p>-->
+              <!--<div><label><input class="full" type="checkbox" /> Full Row</label></div>-->
+              <div class="row-cells">
+                <div class="cell">
+                  <input class="field-edit" disabled type="text" data-row="1" data-col="1" />
+                  <!--<div><a href="#" class="merge-down">Merge Down</a></div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+
+        <div class="responsive-table-container">
+        <div class="preview pinned-columns responsive-table">
+          <h2>Preview</h2>
+          <table id="preview-table">
+            <thead>
+              <tr><th data-col="1">Column 1</th></tr>
+            </thead>
+            <tbody>
+              <tr data-row="1"><td id="col1-row1">Col 1 - Row 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+
+
+        <script src="js/vendor/jquery-3.1.1.min.js"></script>
+
+        <script>
+          $(document).ready(function(){
+            
+
+
+            /***** CONSTANTS *****/
+
+            var addColBtn = $('.add-col'),
+                addRowBtn = $('.add-row'),
+            
+                columnGroup = $('.columns'),
+                rowGroup = $('.rows'),
+                  
+                previewTable = $('#preview-table'),
+                previewTableHead = previewTable.children('thead'),
+                previewTableBody = previewTable.children('tbody');
+            
+            
+            
+            /***** ADD COLUMN *****/
+            
+            addColBtn.on('click', function(e){
+              var columnControl = $('.column'),
+                  rowControl = $('.row');
+              
+              var colCount = columnControl.length + 1,
+                  rowCount = rowControl.length;
+              
+              var column = '<div class="column" id="col' + colCount + '">' +
+                           '<p>Column ' + colCount + '</p>' +
+                           '<input type="text" data-col="' + colCount + '" /></div>';
+              
+              columnGroup.append(column);
+              
+              $('#preview-table thead tr').append('<th data-col="' + colCount + '">Column ' + colCount + '</th>');
+
+              $('#preview-table tbody tr:not(.full-row)').each(function(){
+                var $this = $(this),
+                    spot = $this.index() + 1;
+                
+                $this.append('<td data-col="' + colCount + '" data-row="' + spot + '">Col ' + colCount + ' - Row ' + spot + '</td>');
+              });
+
+              $('#preview-table tbody tr.full-row').each(function(){
+                  $(this).find('td').attr('colspan', colCount);
+              });
+              
+              rowControl.each(function(){
+                var $this = $(this),
+                    rowid = $this.attr('id').replace('row', '');
+
+                if(!$this.hasClass('full-row')){
+                  $this.find('.row-cells').append('<div class="cell"' + ' data-col="' + colCount + '" data-row="' + rowid + '">' +
+                                '<input type="text" disabled class="field-edit"' +
+                                'data-col="' + colCount + '" data-row="' + rowid + '" placeholder="" />' + 
+                                //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
+                                '</div>');
+                }
+              });
+            });
+            
+            
+            
+            /***** ADD ROW *****/
+            
+            addRowBtn.on('click', function(e){
+              var columnControl = $('.column'),
+                  rowControl = $('.row');
+              
+              var rowCount = rowControl.length + 1;
+              var row = '<div class="row" id="row' + rowCount + '">' +
+                        //'<p>Row ' + rowCount + '</p>' +
+                        //'<div><label><input type="checkbox" class="full" /> Full row</label></div>' +
+                        '<div class="row-cells"></div></div>';
+
+              rowGroup.append(row);
+              
+              var tr = $('<tr data-row="' + rowCount + '"></tr>');
+              var currowCount = columnControl.length;
+              
+              for(var i = 0; i < currowCount; i++){
+                var colnum = i + 1;
+                var colName = $('.column input[data-col="' + colnum + '"]').val();
+                var input = $('<div class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '">' +
+                              '<input type="text" disabled class="field-edit"' +
+                              'data-col="' + colnum + '" data-row="' + rowCount + '" placeholder="' + colName + '" />' + 
+                              //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
+                              '</div>');
+
+                $('#row' + rowCount + ' .row-cells').append(input);
+
+                tr.append('<td data-col="' + colnum + '" data-row="' + rowCount + '">Col ' + colnum + ' - Row ' + rowCount + '</td>');
+              }
+              
+              previewTableBody.append(tr);
+            });
+            
+            
+            
+            /***** UPDATING COLUMN TEXT *****/
+            
+            columnGroup.on('keyup', 'input', function() {
+              var $this = $(this),
+                  col = $this.data('col'),
+                  text = $this.val();
+              
+              $('th[data-col="' + col + '"]').text(text);
+              $('.row input[data-col="' + col + '"]').attr('placeholder', text)
+            });
+            
+
+
+            /***** UPDATING CELL TEXT *****/
+
+            rowGroup.on('keyup', '.field-edit', function(){
+              var $this = $(this),
+                  row = $this.data('row'),
+                  col = $this.data('col'),
+                  val = $this.val();
+              
+              $('td[data-col="' + col + '"][data-row="' + row +'"]').text(val);
+            });
+
+            rowGroup.on('dblclick', '.cell', function(){
+              $(this).find('input').removeAttr('disabled');
+              $(this).find('input').focus();
+            });
+
+
+
+            /***** MAKE FULL ROW *****/
+
+            rowGroup.on('change', '.full', function(){
+              var $this = $(this),
+                  parentRow = $this.closest('.row'),
+                  rowID = parentRow.attr('id').replace('row', ''),
+                  colLength = $('.column').length,
+                  addedRow = $('tr[data-row="' + rowID + '"]');
+
+              if($this.is(':checked')){
+                addedRow.addClass('full-row');
+                addedRow.find('td:not(:first-child)').hide();
+                addedRow.find('td:first-child').attr('colspan', colLength);
+
+                parentRow.addClass('full-row');
+                parentRow.find('.merge-down').hide();
+                parentRow.prev().find('.merge-down').hide();
+
+                $('#row' + rowID + ' .cell:not(:first-child)').hide();
+
+              } else {
+                var columnControl = $('.column'),
+                    rowControl = $('.row');
+
+                var rowCount = rowControl.length + 1,
+                    currowCount = columnControl.length;
+
+                $('#row' + rowID + ' .cell:not(:first-child)').show();
+                $('tr[data-row="' + rowID + '"] td:first-child').removeAttr('colspan');
+
+                addedRow.removeClass('full-row');
+                addedRow.find('td:not(:first-child)').show();
+
+                parentRow.find('.merge-down').show();
+              }
+            });
+
+
+
+            /***** MERGE DOWN *****/
+
+            rowGroup.on('click', '.merge-down', function(e){
+              e.preventDefault();
+
+              var $this = $(this),
+                  cellInput = $this.parent().prev(),
+                  thisRow = $this.closest('.row'),
+                  nextRow = thisRow.next('.row');
+
+              var colNum = cellInput.data('col'),
+                  rowNum = cellInput.data('row'),
+                  rowNumNext = cellInput.data('row') + 1;
+
+              var nextRowCol = nextRow.find('input[data-col="' + colNum + '"]');
+
+              $('tr[data-row="' + rowNum + '"]').next().find('td[data-col="' + colNum + '"][data-row="' + rowNumNext + '"]').hide();
+
+              var nextMerged = $('td[data-col="' + colNum + '"][data-row="' + rowNumNext + '"]').attr('rowspan');
+              var mergedNum = Number(nextMerged) + 1;
+
+              if($this.attr('rowspan')){
+                  $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]').attr('rowspan', mergedNum);
+              } else {
+                  $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]').attr('rowspan', '2');
+              }
+
+
+              thisRow.find('label').hide();
+              nextRow.find('label').hide();
+
+              nextRowCol.attr('disabled', 'disabled');
+              //nextRowCol.next().hide();
+
+              if(nextRow.length > 0) {
+                $this.hide();
+              } 
+            });
+
+
+
+            /***** RIGHT CLICK FUNCTIONALITY *****/
+
+            var isMouseDown = false;
+//
+            $('.rows').on('mousedown', '.cell', function () {
+              switch (event.which) {
+                  case 1:
+                    $('.highlight-focus').removeClass('highlight-focus');
+                    $('.highlighted').removeClass("highlighted");
+                    isMouseDown = true;
+                    $(this).addClass("highlighted");
+                    return false; 
+                    break;
+                  case 2:
+                      break;
+                  case 3:
+                      break;
+                  default:
+              }
+            }).on('mouseover', '.cell', function () {
+              if (isMouseDown) {
+                    $(this).addClass("highlighted");
+              }
+            }).on('mouseup', function () {
+              isMouseDown = false;
+            });
+//
+            $(document).on('mousedown', function(){
+              switch (event.which) {
+                  case 1:
+                    isMouseDown = false;
+                    break;
+                  case 2:
+                      break;
+                  case 3:
+                      break;
+                  default:
+              }
+//
+            });
+
+            function mergeCol(){
+
+            }
+
+            $('.table-builder').on('contextmenu', '.highlighted', function(e){
+              e.preventDefault();
+
+              $('.table-builder').addClass('highlight-focus');
+              $('.controls').show();
+            });
+
+            $('.merge-group').on('click', function(e){
+              var highlighted = $(this),
+                  first = highlighted.first(),
+                  firstRow = first.data('row'),
+                  firstCol = first.data('col'),
+                  highlightedItems = $('.highlighted'),
+                  allHighlights = $('.highlighted').length;
+
+
+              var first_iteration = true;
+              console.log(allHighlights);
+
+              highlightedItems.each(function(){
+                var thisRow = $(this).data('row'),
+                    thisCol = $(this).data('col'),
+                    allCols = [],
+                    allRows = []
+
+                if (first_iteration == true) {
+                    $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]').addClass('highlighted').attr('rowspan', allHighlights);
+
+                    allCols.push(thisCol);
+                    allRows.push(thisRow);
+                    first_iteration = false;
+                } else {
+                  $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]').addClass('highlighted').hide();
+                    allCols.push(thisCol);
+                    allRows.push(thisRow);
+                }
+
+                console.log(allCols)
+                console.log(allRows)
+              });
+            });
+
+          });
+        </script>
+    </body>
+</html>
