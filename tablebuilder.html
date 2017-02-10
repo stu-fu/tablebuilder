@@ -9,50 +9,27 @@
         <link rel="stylesheet" href="css/normalize.css">
 
         <style type="text/css">
-        html {font-size: 62.5%;}
+            html {font-size: 62.5%;}
           body { padding:30px; }
-
-          /*table { 
-            border:1px solid #333;   
-            margin:20px 0; padding:0; 
-            transition:all .3s;
-          }
-
-          th { 
-            border-bottom:1px solid #666; border-right:1px solid #666;   
-            padding:5px; 
-            transition:all .3s;
-          }
-
-          td { 
-            padding:5px; 
-            border-bottom:1px solid #ccc; border-right:1px solid #ccc;  
-            transition:all .3s;
-          }*/
 
           .highlight-focus .cell { opacity:0.5; }
           .highlight-focus .cell.highlighted { opacity:1; }
 
           .button {
-            font-weight: 500;
-            font-style: normal;
-            border: 0;
-            border-radius: .4rem;
-            cursor: pointer;
             display: inline-block;
-            background:#0277bd;
-            color:#fff;
-            font-size: .9rem;
+            padding: 0 2rem;
             height: 4.2rem;
+            font-weight: 500; font-style: normal; font-size: .9rem; color:#fff;
+            border: 0; border-radius: .4rem;
+            cursor: pointer;
+            background:#0277bd;
             letter-spacing: .04rem;
             line-height: .01rem;
             outline: none;
-            padding: 0 2rem;
             text-transform: uppercase;
             -webkit-transition: all 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
-            transition: all 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+                    transition: all 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap
-
           }
 
           .columns {
@@ -96,36 +73,23 @@
               line-height: 1.5
           }
 
-          table .left {
-              padding: 0 0 0 2.4rem
-          }
+          table .left { padding: 0 0 0 2.4rem }
 
-          table .right {
-              text-align: right
-          }
+          table .right { text-align: right }
 
-          table .center {
-              text-align: center
-          }
+          table .center { text-align: center }
 
-          table .data {
-              padding: 0 calc(2.4rem + 2rem) 0 2.4rem
-          }
+          table .data { padding: 0 calc(2.4rem + 2rem) 0 2.4rem }
 
-          table svg {
-              fill: #039be5
-          }
+          table svg { fill: #039be5 }
 
           table .data-icon {
               display: block;
-              height: 1.4rem;
-              position: absolute;
-              width: 1.4rem;
-              right: 0;
-              top: 2.4rem;
+              position: absolute; top: 2.4rem; right: 0;
+              width: 1.4rem; height: 1.4rem;
               -webkit-transform: translateY(-0.2rem);
-              -ms-transform: translateY(-0.2rem);
-              transform: translateY(-0.85rem)
+                  -ms-transform: translateY(-0.2rem);
+                      transform: translateY(-0.85rem)
           }
 
           th, td {
@@ -139,10 +103,7 @@
           th {
               background: #e31b23;
               border-bottom: 0.1rem solid #f5f5f5;
-              color: #fff;
-              font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
-              font-weight: 500;
-              font-style: normal;
+              color: #fff; font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; font-weight: 500; font-style: normal;
               letter-spacing: -.03rem;
               padding: 0 2.4rem;
               text-align: left
@@ -150,15 +111,13 @@
 
           tr {
               -webkit-transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
-              transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1)
+                      transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1)
           }
 
           td {
               border-bottom: 0.1rem solid rgba(0, 0, 0, 0.12);
               text-align: left;
-              font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
-              font-weight: 400;
-              font-style: normal
+              font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; font-weight: 400; font-style: normal
           }
 
           td:hover {
@@ -166,23 +125,17 @@
               cursor: pointer
           }
 
-          td:hover svg {
-              fill: #0277bd
-          }
+          td:hover svg { fill: #0277bd }
 
-          .responsive-table-container {
-              width: 100%
-          }
+          .responsive-table-container { width: 100% }
 
           .responsive-table-container .responsive-table {
-              background: #fff;
               display: inline-block;
-              margin-right: -.3rem
+              margin-right: -.3rem;
+              background: #fff;
           }
 
-          .responsive-table-container td, .responsive-table-container th {
-              padding-left: 4.8rem
-          }
+          .responsive-table-container td, .responsive-table-container th { padding-left: 4.8rem }
 
           .responsive-table-container th {
               min-width: 10rem;
@@ -190,99 +143,59 @@
               white-space: nowrap
           }
 
-          .responsive-table-container .pinned-columns th:first-child, .responsive-table-container .pinned-columns td:first-child {
-              padding-left: 2.4rem
-          }
-
-          .responsive-table-container .pinned-columns th:last-child, .responsive-table-container .pinned-columns td:last-child {
-              padding-right: 9.6rem
-          }
+          .responsive-table-container .pinned-columns th:first-child, .responsive-table-container .pinned-columns td:first-child { padding-left: 2.4rem }
+          .responsive-table-container .pinned-columns th:last-child, .responsive-table-container .pinned-columns td:last-child { padding-right: 9.6rem }
 
           .responsive-table-container .scrollable-columns td {
               padding-right: 3rem;
               text-align: right
           }
 
-          .responsive-table-container .scrollable-columns td .data-icon {
-              right: 1rem
-          }
+          .responsive-table-container .scrollable-columns td .data-icon { right: 1rem }
+          .responsive-table-container .scrollable-columns td:last-child { padding-right: 4.8rem }
+          .responsive-table-container .scrollable-columns td:last-child .data-icon { right: 2.4rem }
+          .responsive-table-container .scrollable-columns th:last-child { padding-right: 2.4rem }
 
-          .responsive-table-container .scrollable-columns td:last-child {
-              padding-right: 4.8rem
-          }
+          .row-hover td { background: rgba(0, 0, 0, 0.04) }
 
-          .responsive-table-container .scrollable-columns td:last-child .data-icon {
-              right: 2.4rem
-          }
-
-          .responsive-table-container .scrollable-columns th:last-child {
-              padding-right: 2.4rem
-          }
-
-          .row-hover td {
-              background: rgba(0, 0, 0, 0.04)
-          }
-
-          .pinned-columns {
-              z-index: 2
-          }
+          .pinned-columns { z-index: 2 }
 
           .is-scrollable .pinned-columns::after {
-              box-shadow: inset -0.6rem -0.1rem 0.2rem -0.2rem rgba(0, 0, 0, 0.24);
+              position: absolute; right: 0;  top: 0;
               content: '';
-              height: 100%;
-              position: absolute;
-              right: 0;
-              top: 0;
+              height: 100%; width: .6rem;
+              box-shadow: inset -0.6rem -0.1rem 0.2rem -0.2rem rgba(0, 0, 0, 0.24);
               -webkit-transform: rotate(180deg) translateX(-0.5rem);
-              -ms-transform: rotate(180deg) translateX(-0.5rem);
-              transform: rotate(180deg) translateX(-0.5rem);
-              width: .6rem
+                  -ms-transform: rotate(180deg) translateX(-0.5rem);
+                      transform: rotate(180deg) translateX(-0.5rem);
+              
           }
 
           .scrollable-columns {
-              overflow-x: auto;
-              overflow-y: hidden;
-              position: absolute;
-              top: 0
+              overflow-x: auto; overflow-y: hidden;
+              position: absolute; top: 0
           }
 
-          .is-ie9 .responsive-table {
-              margin-right: -.3rem
-          }
+          .is-ie9 .responsive-table { margin-right: -.3rem }
 
-          .simple-table th {
-              box-shadow: none
-          }
+          .simple-table th { box-shadow: none }
 
           .simple-table tr {
               -webkit-transition: all .25s;
-              transition: all .25s
+                      transition: all .25s
           }
 
-          .simple-table tr:hover td {
-              background: rgba(0, 0, 0, 0.04)
-          }
+          .simple-table tr:hover td { background: rgba(0, 0, 0, 0.04) }
 
-          .simple-table th:first-child, .simple-table td:first-child {
-              padding-right: 4.8rem
+          .simple-table th:first-child, .simple-table td:first-child { padding-right: 4.8rem
           }
 
           .simple-table th:nth-child(2), .simple-table td:nth-child(2) {
               padding-right: 4.8rem
           }
-
-          .simple-table th:nth-child(3), .simple-table td:nth-child(3) {
-              padding-left: 0
-          }
-
-          .simple-table .category {
-              padding: 0
-          }
-
-          .dual-axis-table th {
-              padding-right: 3rem
-          }
+        .simple-table th:nth-child(3), .simple-table td:nth-child(3) { padding-left: 0 } 
+        .simple-table .category { padding: 0 }
+        .dual-axis-table th { padding-right: 3rem }
 
           .dual-axis-table .noborder {
               border: 0;
@@ -298,73 +211,46 @@
               box-shadow: inset 0 -0.1rem 0 0 rgba(255, 255, 255, 0.3)
           }
 
-          .dual-axis-table .data {
-              background: rgba(0, 0, 0, 0.02)
-          }
+           .dual-axis-table .data { background: rgba(0, 0, 0, 0.02) } 
+           .row-hover td { background: rgba(0, 0, 0, 0.03) } 
+           .pinned-columns .dual-axis-table .row-hover td { background: rgba(0, 0, 0, 0.02) } 
+            .pinned-columns .dual-axis-table .row-hover td:first-child { background: rgba(0, 0, 0, 0.03) } 
+            .scrollable-columns .dual-axis-table .row-hover td { background: rgba(0, 0, 0, 0.08) }
 
-          .row-hover td {
-              background: rgba(0, 0, 0, 0.03)
-          }
-
-          .pinned-columns .dual-axis-table .row-hover td {
-              background: rgba(0, 0, 0, 0.02)
-          }
-
-          .pinned-columns .dual-axis-table .row-hover td:first-child {
-              background: rgba(0, 0, 0, 0.03)
-          }
-
-          .scrollable-columns .dual-axis-table .row-hover td {
-              background: rgba(0, 0, 0, 0.08)
-          }
-
-          .scrollable-columns .dual-axis-table .hovered-column {
-              background: rgba(0, 0, 0, 0.08)
-          }
+            .scrollable-columns .dual-axis-table .hovered-column { background: rgba(0, 0, 0, 0.08) }
 
           .has-note:hover::after {
-              background: #616161;
-              bottom: -3.36rem;
-              color: #fff;
               content: 'Exclusion text goes here lorem ipsum dolor';
-              font-size: 1.2rem;
-              left: -1.2rem;
+              position: absolute; left: -1.2rem; z-index: 10; bottom: -3.36rem;
               padding: .8rem;
-              position: absolute;
-              text-align: center;
               width: 30rem;
-              z-index: 10
+              color: #fff; font-size: 1.2rem;
+              text-align: center;
+              background: #616161;
           }
 
           .has-note.note-1::before {
               border: 0;
               content: '1';
-              position: absolute;
-              right: 1rem;
-              top: 0
+              position: absolute; right: 1rem; top: 0
           }
 
           .has-note.note-2::before {
               border: 0;
               content: '2';
-              position: absolute;
-              right: 1rem;
-              top: 0
+              position: absolute; right: 1rem; top: 0
           }
 
           .has-note.note-3::before {
               border: 0;
               content: '3';
-              position: absolute;
-              right: 1rem;
-              top: 0
+              position: absolute; right: 1rem; top: 0
           }
 
           .table-notes {
               display: block;
-              left: 19.2rem;
+              left: 19.2rem; top: 1.7rem;
               min-height: 10rem;
-              top: 1.7rem
           }
 
           .table-notes .table-note {
@@ -372,18 +258,14 @@
               margin-bottom: .6rem
           }
 
-          .versions-table {
-              margin-top: 2.5rem
-          }
+          .versions-table { margin-top: 2.5rem }
 
           .versions-table .responsive-table-container {
               max-height: 0;
               overflow: hidden
           }
 
-          .versions-table .responsive-table-container.active {
-              max-height: none
-          }
+          .versions-table .responsive-table-container.active { max-height: none }
 
           .view-all-versions-button {
               color: #039be5;
@@ -392,9 +274,7 @@
 
           .archive-table th {
               background: rgba(0, 0, 0, 0.12);
-              color: rgba(0, 0, 0, 0.87);
-              font-style: normal;
-              font-weight: 500;
+              color: rgba(0, 0, 0, 0.87); font-style: normal; font-weight: 500;
               letter-spacing: -.04rem;
               line-height: 1.45
           }
@@ -415,6 +295,7 @@
         <div class="table-builder">
           <button class="add-col button">Add Column</button>
           <button class="add-row button">Add Row</button>
+          <button class="save button">Save</button>
 
           <div class="controls">
             <button class="button merge-group">Merge Highlighted</button>
@@ -440,7 +321,6 @@
             </div>
           </div>
         </div>
-  
 
         <div class="responsive-table-container">
         <div class="preview pinned-columns responsive-table">
@@ -456,6 +336,8 @@
         </div>
         </div>
 
+        <h2>JSON</h2>
+        <div class="json-output"></div>
 
         <script src="js/vendor/jquery-3.1.1.min.js"></script>
 
@@ -476,11 +358,18 @@
                 previewTableHead = previewTable.children('thead'),
                 previewTableBody = previewTable.children('tbody');
             
+            var tableJSON = [],
+                JSONoutput;
+            var columnJson = [];
+            var rowJson = [];
+            var columnParent = { 'Columns': columnJson };
+            var rowParent = { 'Rows': rowJson };
             
-            
+
+
             /***** ADD COLUMN *****/
             
-            addColBtn.on('click', function(e){
+            addColBtn.on('click', function(e) {
               var columnControl = $('.column'),
                   rowControl = $('.row');
               
@@ -493,20 +382,25 @@
               
               columnGroup.append(column);
               
+              var columnJsonItem = { 'column': colCount };
+                
+              columnJson.push(columnJsonItem)
+
+              
               $('#preview-table thead tr').append('<th data-col="' + colCount + '">Column ' + colCount + '</th>');
 
-              $('#preview-table tbody tr:not(.full-row)').each(function(){
+              $('#preview-table tbody tr:not(.full-row)').each(function() {
                 var $this = $(this),
                     spot = $this.index() + 1;
                 
                 $this.append('<td data-col="' + colCount + '" data-row="' + spot + '">Col ' + colCount + ' - Row ' + spot + '</td>');
               });
 
-              $('#preview-table tbody tr.full-row').each(function(){
+              $('#preview-table tbody tr.full-row').each(function() {
                   $(this).find('td').attr('colspan', colCount);
               });
               
-              rowControl.each(function(){
+              rowControl.each(function() {
                 var $this = $(this),
                     rowid = $this.attr('id').replace('row', '');
 
@@ -518,13 +412,12 @@
                                 '</div>');
                 }
               });
-            });
+            }); 
             
-            
-            
+             
             /***** ADD ROW *****/
             
-            addRowBtn.on('click', function(e){
+            addRowBtn.on('click', function(e) {
               var columnControl = $('.column'),
                   rowControl = $('.row');
               
@@ -536,10 +429,14 @@
 
               rowGroup.append(row);
               
+              var rowJsonItem = { 'row': rowCount };
+                
+              rowJson.push(rowJsonItem)
+
               var tr = $('<tr data-row="' + rowCount + '"></tr>');
               var currowCount = columnControl.length;
               
-              for(var i = 0; i < currowCount; i++){
+              for(var i = 0; i < currowCount; i++) {
                 var colnum = i + 1;
                 var colName = $('.column input[data-col="' + colnum + '"]').val();
                 var input = $('<div class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '">' +
@@ -557,6 +454,13 @@
             });
             
             
+            $('.save').on('click', function(){
+                tableJSON.push(columnParent, rowParent);
+                 var JSONoutput = JSON.stringify(tableJSON);
+                $('.json-output').html(JSONoutput);
+            });
+
+            
             
             /***** UPDATING COLUMN TEXT *****/
             
@@ -573,7 +477,7 @@
 
             /***** UPDATING CELL TEXT *****/
 
-            rowGroup.on('keyup', '.field-edit', function(){
+            rowGroup.on('keyup', '.field-edit', function() {
               var $this = $(this),
                   row = $this.data('row'),
                   col = $this.data('col'),
@@ -582,7 +486,7 @@
               $('td[data-col="' + col + '"][data-row="' + row +'"]').text(val);
             });
 
-            rowGroup.on('dblclick', '.cell', function(){
+            rowGroup.on('dblclick', '.cell', function() {
               $(this).find('input').removeAttr('disabled');
               $(this).find('input').focus();
             });
@@ -591,7 +495,7 @@
 
             /***** MAKE FULL ROW *****/
 
-            rowGroup.on('change', '.full', function(){
+            rowGroup.on('change', '.full', function() {
               var $this = $(this),
                   parentRow = $this.closest('.row'),
                   rowID = parentRow.attr('id').replace('row', ''),
@@ -630,7 +534,7 @@
 
             /***** MERGE DOWN *****/
 
-            rowGroup.on('click', '.merge-down', function(e){
+            rowGroup.on('click', '.merge-down', function(e) {
               e.preventDefault();
 
               var $this = $(this),
