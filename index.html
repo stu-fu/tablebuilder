@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
 
         <style type="text/css">
  
@@ -36,39 +37,18 @@
             <button class="button merge-group">Merge Highlighted</button>
           </div>  
 
-          <div class="columns">
-            <div class="column" id="col1">
-              <p>Column 1</p>
-              <input type="text" data-col="1" />
-            </div>
-          </div>
-
-          <div class="rows">
-            <div class="row" id="row1">
-              <!--<p>Row 1</p>-->
-              <!--<div><label><input class="full" type="checkbox" /> Full Row</label></div>-->
-              <div class="row-cells">
-                <div class="cell">
-                  <input class="field-edit" disabled type="text" data-row="1" data-col="1" />
-                  <!--<div><a href="#" class="merge-down">Merge Down</a></div>-->
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="columns"></div>
+          <div class="rows"></div>
         </div>
 
         <div class="responsive-table-container">
-        <div class="preview pinned-columns responsive-table">
-          <h2>Preview</h2>
-          <table id="preview-table">
-            <thead>
-              <tr><th data-col="1">Column 1</th></tr>
-            </thead>
-            <tbody>
-              <tr data-row="1"><td id="col1-row1">Col 1 - Row 1</td></tr>
-            </tbody>
-          </table>
-        </div>
+            <div class="preview pinned-columns responsive-table">
+            <h2>Preview</h2>
+            <table id="preview-table">
+                <thead><tr></tr></thead>
+                <tbody></tbody>
+            </table>
+            </div>
         </div>
 
         <h2>JSON</h2>
