@@ -291,6 +291,16 @@
         <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
+        
+        <div class="instructions">
+            <p><strong>Instructions:</strong></p>
+            <ul>
+                <li>Add columns and rows using the buttons below. </li>
+                <li>Highlight cells by holding down your left mouse button. </li>
+                <li>Right click to display cell options. </li>
+                <li>Double click a cell to edit its contents. Save table to export json</li>
+            </ul>
+        </div>
 
         <div class="table-builder">
           <button class="add-col button">Add Column</button>
@@ -653,7 +663,7 @@
                   $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]').addClass('highlighted').hide();
                     allCols.push(thisCol);
                     allRows.push(thisRow);
-                }
+                } 
 
                 console.log(allCols)
                 console.log(allRows)
