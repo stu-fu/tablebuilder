@@ -37,29 +37,29 @@ transition:all .3s;
 .cell:hover { border:1px solid lightblue; background:#ddd; box-shadow:0 0 3px #333; }
 .cell.highlighted { background:lightgreen; }
 input[type="text"] {
-padding:7px;
-transition:all .3s;
+    padding:7px;
+    transition:all .3s;
 }
 
 input[type="text"]:disabled {
-background:transparent;
-border:2px solid transparent;
-cursor:pointer;
-visibility:hidden;
+    background:transparent;
+    border:2px solid transparent;
+    cursor:pointer;
+    visibility:hidden;
 }
 
 .table-builder {
-background:#eee; padding:30px;
-transition:all .3s;
-max-width:100%; overflow-y:auto; 
+    background:#eee; padding:30px;
+    transition:all .3s;
+    max-width:100%; overflow-y:auto; 
 }
 
 .row:last-child .merge-down { display:none !important;  }
 
 table {
-font-size: 1.1rem;
-letter-spacing: .03rem;
-line-height: 1.5
+    font-size: 1.1rem;
+    letter-spacing: .03rem;
+    line-height: 1.5
 }
 
 table .left { padding: 0 0 0 2.4rem }
@@ -70,45 +70,45 @@ table .data { padding: 0 calc(2.4rem + 2rem) 0 2.4rem }
 table svg { fill: #039be5 }
 
 table .data-icon {
-display: block;
-position: absolute; top: 2.4rem; right: 0;
-width: 1.4rem; height: 1.4rem;
--webkit-transform: translateY(-0.2rem);
-    -ms-transform: translateY(-0.2rem);
-        transform: translateY(-0.85rem)
+    display: block;
+    position: absolute; top: 2.4rem; right: 0;
+    width: 1.4rem; height: 1.4rem;
+    -webkit-transform: translateY(-0.2rem);
+        -ms-transform: translateY(-0.2rem);
+            transform: translateY(-0.85rem)
 }
 
 th, td {
-font-size: 1.1rem;
-height: 4.8rem;
-letter-spacing: .03rem;
-line-height: 1.5;
-vertical-align: middle
+    font-size: 1.1rem;
+    height: 4.8rem;
+    letter-spacing: .03rem;
+    line-height: 1.5;
+    vertical-align: middle
 }
 
 th {
-background: #e31b23;
-border-bottom: 0.1rem solid #f5f5f5;
-color: #fff; font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; font-weight: 500; font-style: normal;
-letter-spacing: -.03rem;
-padding: 0 2.4rem;
-text-align: left
+    background: #e31b23;
+    border-bottom: 0.1rem solid #f5f5f5;
+    color: #fff; font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; font-weight: 500; font-style: normal;
+    letter-spacing: -.03rem;
+    padding: 0 2.4rem;
+    text-align: left
 }
 
 tr {
--webkit-transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
-        transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1)
+    -webkit-transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 200ms 0ms cubic-bezier(0.4, 0, 0.2, 1)
 }
 
 td {
-border-bottom: 0.1rem solid rgba(0, 0, 0, 0.12);
-text-align: left;
-font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; font-weight: 400; font-style: normal
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.12);
+    text-align: left;
+    font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; font-weight: 400; font-style: normal
 }
 
 td:hover {
-color: #0277bd;
-cursor: pointer
+    color: #0277bd;
+    cursor: pointer
 }
 
 td:hover svg { fill: #0277bd }
@@ -116,25 +116,25 @@ td:hover svg { fill: #0277bd }
 .responsive-table-container { width: 100% }
 
 .responsive-table-container .responsive-table {
-display: inline-block;
-margin-right: -.3rem;
-background: #fff;
+    display: inline-block;
+    margin-right: -.3rem;
+    background: #fff;
 }
 
 .responsive-table-container td, .responsive-table-container th { padding-left: 4.8rem }
 
 .responsive-table-container th {
-min-width: 10rem;
-padding-right: 0;
-white-space: nowrap
+    min-width: 10rem;
+    padding-right: 0;
+    white-space: nowrap
 }
 
 .responsive-table-container .pinned-columns th:first-child, .responsive-table-container .pinned-columns td:first-child { padding-left: 2.4rem }
 .responsive-table-container .pinned-columns th:last-child, .responsive-table-container .pinned-columns td:last-child { padding-right: 9.6rem }
 
 .responsive-table-container .scrollable-columns td {
-padding-right: 3rem;
-text-align: right
+    padding-right: 3rem;
+    text-align: right
 }
 
 .responsive-table-container .scrollable-columns td .data-icon { right: 1rem }
@@ -147,19 +147,19 @@ text-align: right
 .pinned-columns { z-index: 2 }
 
 .is-scrollable .pinned-columns::after {
-position: absolute; right: 0;  top: 0;
-content: '';
-height: 100%; width: .6rem;
-box-shadow: inset -0.6rem -0.1rem 0.2rem -0.2rem rgba(0, 0, 0, 0.24);
--webkit-transform: rotate(180deg) translateX(-0.5rem);
-    -ms-transform: rotate(180deg) translateX(-0.5rem);
-        transform: rotate(180deg) translateX(-0.5rem);
+    position: absolute; right: 0;  top: 0;
+    content: '';
+    height: 100%; width: .6rem;
+    box-shadow: inset -0.6rem -0.1rem 0.2rem -0.2rem rgba(0, 0, 0, 0.24);
+    -webkit-transform: rotate(180deg) translateX(-0.5rem);
+        -ms-transform: rotate(180deg) translateX(-0.5rem);
+            transform: rotate(180deg) translateX(-0.5rem);
 
 }
 
 .scrollable-columns {
-overflow-x: auto; overflow-y: hidden;
-position: absolute; top: 0
+    overflow-x: auto; overflow-y: hidden;
+    position: absolute; top: 0
 }
 
 .is-ie9 .responsive-table { margin-right: -.3rem }
@@ -167,8 +167,8 @@ position: absolute; top: 0
 .simple-table th { box-shadow: none }
 
 .simple-table tr {
--webkit-transition: all .25s;
-        transition: all .25s
+    -webkit-transition: all .25s;
+            transition: all .25s
 }
 
 .simple-table tr:hover td { background: rgba(0, 0, 0, 0.04) }
@@ -184,17 +184,17 @@ padding-right: 4.8rem
 .dual-axis-table th { padding-right: 3rem }
 
 .dual-axis-table .noborder {
-border: 0;
-box-shadow: none
+    border: 0;
+    box-shadow: none
 }
 
 .dual-axis-table .nobackground {
-background: none;
-color: #424242
+    background: none;
+    color: #424242
 }
 
 .dual-axis-table .y-axis-th {
-box-shadow: inset 0 -0.1rem 0 0 rgba(255, 255, 255, 0.3)
+    box-shadow: inset 0 -0.1rem 0 0 rgba(255, 255, 255, 0.3)
 }
 
 .dual-axis-table .data { background: rgba(0, 0, 0, 0.02) } 
@@ -206,68 +206,81 @@ box-shadow: inset 0 -0.1rem 0 0 rgba(255, 255, 255, 0.3)
 .scrollable-columns .dual-axis-table .hovered-column { background: rgba(0, 0, 0, 0.08) }
 
 .has-note:hover::after {
-content: 'Exclusion text goes here lorem ipsum dolor';
-position: absolute; left: -1.2rem; z-index: 10; bottom: -3.36rem;
-padding: .8rem;
-width: 30rem;
-color: #fff; font-size: 1.2rem;
-text-align: center;
-background: #616161;
+    content: 'Exclusion text goes here lorem ipsum dolor';
+    position: absolute; left: -1.2rem; z-index: 10; bottom: -3.36rem;
+    padding: .8rem;
+    width: 30rem;
+    color: #fff; font-size: 1.2rem;
+    text-align: center;
+    background: #616161;
 }
 
 .has-note.note-1::before {
-border: 0;
-content: '1';
-position: absolute; right: 1rem; top: 0
+    border: 0;
+    content: '1';
+    position: absolute; right: 1rem; top: 0
 }
 
 .has-note.note-2::before {
-border: 0;
-content: '2';
-position: absolute; right: 1rem; top: 0
+    border: 0;
+    content: '2';
+    position: absolute; right: 1rem; top: 0
 }
 
 .has-note.note-3::before {
-border: 0;
-content: '3';
-position: absolute; right: 1rem; top: 0
+    border: 0;
+    content: '3';
+    position: absolute;
+    right: 1rem;
+    top: 0
 }
 
 .table-notes {
-display: block;
-left: 19.2rem; top: 1.7rem;
-min-height: 10rem;
+    display: block;
+    left: 19.2rem;
+    top: 1.7rem;
+    min-height: 10rem;
 }
 
 .table-notes .table-note {
-color: rgba(0, 0, 0, 0.87);
-margin-bottom: .6rem
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: .6rem
 }
 
-.versions-table { margin-top: 2.5rem }
+.versions-table {
+    margin-top: 2.5rem
+}
 
 .versions-table .responsive-table-container {
-max-height: 0;
-overflow: hidden
+    max-height: 0;
+    overflow: hidden
 }
 
-.versions-table .responsive-table-container.active { max-height: none }
+.versions-table .responsive-table-container.active {
+    max-height: none
+}
 
 .view-all-versions-button {
-color: #039be5;
-padding: 0 0 1.5rem
+    color: #039be5;
+    padding: 0 0 1.5rem
 }
 
 .archive-table th {
-background: rgba(0, 0, 0, 0.12);
-color: rgba(0, 0, 0, 0.87); font-style: normal; font-weight: 500;
-letter-spacing: -.04rem;
-line-height: 1.45
+    background: rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.87);
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -.04rem;
+    line-height: 1.45
 }
-
 .archive-table .clickable {
-color: #039be5;
-text-decoration: underline
+    color: #039be5;
+    text-decoration: underline
 }
 
-.controls { display:none; padding:15px; background:#ddd; margin-top:15px; }
+.controls {
+    display: none;
+    padding: 15px;
+    background: #ddd;
+    margin-top: 15px;
+}
