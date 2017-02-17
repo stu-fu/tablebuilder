@@ -187,7 +187,7 @@
 
 
             /***** MERGE DOWN *****/
-
+            
             rowGroup.on('click', '.merge-down', function(e) {
               e.preventDefault();
 
@@ -229,15 +229,19 @@
 
             /***** RIGHT CLICK FUNCTIONALITY *****/
 
-            var isMouseDown = false;
+            var isMouseDown = false,
+                initialColPos, initialRowPos;
 //
             $('.rows').on('mousedown', '.cell', function () {
               switch (event.which) {
                   case 1:
                     $('.highlight-focus').removeClass('highlight-focus');
                     $('.highlighted').removeClass("highlighted");
-                    isMouseDown = true;
-                    $(this).addClass("highlighted");
+                    $('.highlightable').removeClass('highlightable')
+                    if(event.shiftKey) {
+                        isMouseDown = true;
+                        $(this).addClass("highlighted");
+                    }
                     return false; 
                     break;
                   case 2:
@@ -247,8 +251,33 @@
                   default:
               }
             }).on('mouseover', '.cell', function () {
-              if (isMouseDown) {
-                    $(this).addClass("highlighted");
+              if (isMouseDown = true && event.shiftKey) {
+                    if($('.highlighted').length === 1){
+                        console.log('1 hightlighted')
+                        $(this).addClass("highlighted");
+                        initialColPos = $(this).data('col');
+                        initialRowPos = $(this).data('row');
+
+                        console.log(initialColPos);
+                        console.log(initialRowPos);
+                    } else if ($('.highlighted').length === 2) {
+                        $(this).addClass("highlighted");
+                        if($(this).data('col') === initialColPos) {
+                            $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
+                            $('#previewTable').addClass('merge-col')
+                        } else if($(this).data('row') === initialRowPos){
+                            $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
+                            $('#previewTable').addClass('merge-row')
+                        } else {
+                        }
+                        console.log('more highlighted')
+                    } else if ($('.highlighted').length > 2){
+                        if($(this).hasClass('highlightable')){
+                            $(this).addClass('highlighted')
+                        }
+                    } else {
+                        console.log('whoops')
+                    }
               }
             }).on('mouseup', function () {
               isMouseDown = false;
