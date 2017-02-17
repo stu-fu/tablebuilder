@@ -206,7 +206,7 @@
  
               var nextMerged = $('td[data-col="' + colNum + '"][data-row="' + rowNumNext + '"]').attr('rowspan');
               var mergedNum = Number(nextMerged) + 1;
-
+ 
               if($this.attr('rowspan')){
                   $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]').attr('rowspan', mergedNum);
               } else {
