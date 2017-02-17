@@ -203,7 +203,7 @@
               var nextRowCol = nextRow.find('input[data-col="' + colNum + '"]');
 
               $('tr[data-row="' + rowNum + '"]').next().find('td[data-col="' + colNum + '"][data-row="' + rowNumNext + '"]').hide();
-
+ 
               var nextMerged = $('td[data-col="' + colNum + '"][data-row="' + rowNumNext + '"]').attr('rowspan');
               var mergedNum = Number(nextMerged) + 1;
 
