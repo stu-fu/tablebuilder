@@ -55,16 +55,16 @@
         });
         
         rowControl.each(function() {
-        var $this = $(this),
-            rowid = $this.attr('id').replace('row', '');
+            var $this = $(this),
+                rowid = $this.attr('id').replace('row', '');
 
-        if(!$this.hasClass('full-row')){
-            $this.find('.row-cells').append('<div class="cell"' + ' data-col="' + colCount + '" data-row="' + rowid + '">' +
-                        '<input type="text" class="field-edit"' +
-                        'data-col="' + colCount + '" data-row="' + rowid + '" placeholder="" />' + 
-                        //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
-                        '</div>');
-        }
+            if(!$this.hasClass('full-row')){
+                $this.find('.row-cells').append('<div class="cell"' + ' data-col="' + colCount + '" data-row="' + rowid + '">' +
+                            '<input type="text" class="field-edit"' +
+                            'data-col="' + colCount + '" data-row="' + rowid + '" placeholder="" />' + 
+                            //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
+                            '</div>');
+            }
         });
     }); 
     
@@ -141,7 +141,6 @@
     });
 
     rowGroup.on('click', '.cell', function() {
-        $(this).find('input').removeAttr('disabled');
         $(this).find('input').focus();
     });
 
@@ -223,6 +222,28 @@
 
 
 
+    /***** MERGE ACROSS *****/
+    
+    $('.controls').on('click', '.merge-across', function(e) {
+        e.preventDefault();
+
+        var firstitem = $('.highlighted').first();
+        var mergedNum = $('.highlighted').length;
+        
+        var colNum = firstitem.data('col'),
+            rowNum = firstitem.data('row');
+
+        var TD = $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]');
+
+        $(this).attr('rowspan', mergedNum);
+
+        firstitem.nextUntil('.cell:not(.highlighted)').hide();
+        TD.attr('colspan', mergedNum);
+        
+    });
+
+
+
     /***** RIGHT CLICK FUNCTIONALITY *****/
 
     var isMouseDown = false,
@@ -243,7 +264,7 @@
                 if ($('.highlighted').length === 0){
                     initialColPos = $this.data('col');
                     initialRowPos = $this.data('row');
-                    $this.addClass("highlighted");
+                    $this.addClass("highlighted first-highlight");
                 } else {
                     $this.addClass("highlighted");
                 }
@@ -258,7 +279,8 @@
         }
     }).on('mouseover', '.cell', function () {
         var $this = $(this),
-            highlighted = $('.highlighted');
+            highlighted = $('.highlighted'),
+            previewTable = $('#previewTable');
 
         if (isMouseDown = true && event.shiftKey) {
             if(highlighted.length === 1){
@@ -266,11 +288,12 @@
 
                 if($this.data('col') === initialColPos) {
                     $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
-                    $('#previewTable').addClass('merge-col');
+                    previewTable.addClass('merge-col');
 
                 } else if($this.data('row') === initialRowPos){
                     $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
-                    $('#previewTable').addClass('merge-row');
+                    $('#row'+ initialRowPos).addClass('highlighted-row')
+                    previewTable.addClass('merge-row');
 
                 } else { }
             } else if (highlighted.length > 1) {
