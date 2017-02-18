@@ -248,8 +248,6 @@
 
             $('td[data-col="' + thiscolNum + '"][data-row="' + thisrowNum + '"]').hide();
         });
-
-        
     });
 
 
