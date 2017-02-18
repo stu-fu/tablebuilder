@@ -322,19 +322,20 @@
         var first_iteration = true;
 
         highlightedItems.each(function(){
-        var thisRow = $(this).data('row'),
-            thisCol = $(this).data('col'),
+        var $this = $(this),
+            thisRow = $this.data('row'),
+            thisCol = $this.data('col'),
             allCols = [],
-            allRows = []
+            allRows = [],
+            TD = $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]');
 
         if (first_iteration == true) {
-            $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]').addClass('highlighted').attr('rowspan', allHighlights);
-
+            TD.addClass('highlighted').attr('rowspan', allHighlights);
             allCols.push(thisCol);
             allRows.push(thisRow);
             first_iteration = false;
         } else {
-            $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]').addClass('highlighted').hide();
+            TD.addClass('highlighted').hide();
             allCols.push(thisCol);
             allRows.push(thisRow);
         } 
