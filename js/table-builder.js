@@ -198,7 +198,8 @@
 
         var colNum = cellInput.data('col'),
             rowNum = cellInput.data('row'),
-            rowNumNext = cellInput.data('row') + 1;
+            rowNumNext = cellInput.data('row') + 1,
+            TD = $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]');
 
         var nextRowCol = nextRow.find('input[data-col="' + colNum + '"]');
 
@@ -207,11 +208,7 @@
         var nextMerged = $('td[data-col="' + colNum + '"][data-row="' + rowNumNext + '"]').attr('rowspan');
         var mergedNum = Number(nextMerged) + 1;
 
-        if($this.attr('rowspan')){
-            $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]').attr('rowspan', mergedNum);
-        } else {
-            $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]').attr('rowspan', '2');
-        }
+        $this.attr('rowspan') ? TD.attr('rowspan', mergedNum) : TD.attr('rowspan', '2');
 
         thisRow.find('label').hide();
         nextRow.find('label').hide();
@@ -220,7 +217,7 @@
         //nextRowCol.next().hide();
 
         if(nextRow.length > 0) {
-        $this.hide();
+            $this.hide();
         } 
     });
 
