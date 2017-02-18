@@ -157,30 +157,30 @@
             addedRow = $('tr[data-row="' + rowID + '"]');
 
         if($this.is(':checked')){
-        addedRow.addClass('full-row');
-        addedRow.find('td:not(:first-child)').hide();
-        addedRow.find('td:first-child').attr('colspan', colLength);
+            addedRow.addClass('full-row');
+            addedRow.find('td:not(:first-child)').hide();
+            addedRow.find('td:first-child').attr('colspan', colLength);
 
-        parentRow.addClass('full-row');
-        parentRow.find('.merge-down').hide();
-        parentRow.prev().find('.merge-down').hide();
+            parentRow.addClass('full-row');
+            parentRow.find('.merge-down').hide();
+            parentRow.prev().find('.merge-down').hide();
 
-        $('#row' + rowID + ' .cell:not(:first-child)').hide();
+            $('#row' + rowID + ' .cell:not(:first-child)').hide();
 
         } else {
-        var columnControl = $('.column'),
-            rowControl = $('.row');
+            var columnControl = $('.column'),
+                rowControl = $('.row');
 
-        var rowCount = rowControl.length + 1,
-            currowCount = columnControl.length;
+            var rowCount = rowControl.length + 1,
+                currowCount = columnControl.length;
 
-        $('#row' + rowID + ' .cell:not(:first-child)').show();
-        $('tr[data-row="' + rowID + '"] td:first-child').removeAttr('colspan');
+            $('#row' + rowID + ' .cell:not(:first-child)').show();
+            $('tr[data-row="' + rowID + '"] td:first-child').removeAttr('colspan');
 
-        addedRow.removeClass('full-row');
-        addedRow.find('td:not(:first-child)').show();
+            addedRow.removeClass('full-row');
+            addedRow.find('td:not(:first-child)').show();
 
-        parentRow.find('.merge-down').show();
+            parentRow.find('.merge-down').show();
         }
     });
 
@@ -213,7 +213,6 @@
             $('td[data-col="' + colNum + '"][data-row="' + rowNum + '"]').attr('rowspan', '2');
         }
 
-
         thisRow.find('label').hide();
         nextRow.find('label').hide();
 
@@ -235,12 +234,22 @@
     $('.rows').on('mousedown', '.cell', function () {
         switch (event.which) {
             case 1:
+
+            var $this = $(this);
+
             $('.highlight-focus').removeClass('highlight-focus');
             $('.highlighted').removeClass("highlighted");
-            $('.highlightable').removeClass('highlightable')
+            $('.highlightable').removeClass('highlightable');
+
             if(event.shiftKey) {
                 isMouseDown = true;
-                $(this).addClass("highlighted");
+                if ($('.highlighted').length === 0){
+                    initialColPos = $this.data('col');
+                    initialRowPos = $this.data('row');
+                    $this.addClass("highlighted");
+                } else {
+                    $this.addClass("highlighted");
+                }
             }
             return false; 
             break;
@@ -251,33 +260,27 @@
             default:
         }
     }).on('mouseover', '.cell', function () {
-        if (isMouseDown = true && event.shiftKey) {
-            if($('.highlighted').length === 1){
-                console.log('1 hightlighted')
-                $(this).addClass("highlighted");
-                initialColPos = $(this).data('col');
-                initialRowPos = $(this).data('row');
+        var $this = $(this),
+            highlighted = $('.highlighted');
 
-                console.log(initialColPos);
-                console.log(initialRowPos);
-            } else if ($('.highlighted').length === 2) {
-                $(this).addClass("highlighted");
-                if($(this).data('col') === initialColPos) {
+        if (isMouseDown = true && event.shiftKey) {
+            if(highlighted.length === 1){
+                $this.addClass("highlighted");
+
+                if($this.data('col') === initialColPos) {
                     $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
-                    $('#previewTable').addClass('merge-col')
-                } else if($(this).data('row') === initialRowPos){
+                    $('#previewTable').addClass('merge-col');
+
+                } else if($this.data('row') === initialRowPos){
                     $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
-                    $('#previewTable').addClass('merge-row')
-                } else {
+                    $('#previewTable').addClass('merge-row');
+
+                } else { }
+            } else if (highlighted.length > 1) {
+                if($this.hasClass('highlightable')){
+                    $this.addClass("highlighted");
                 }
-                console.log('more highlighted')
-            } else if ($('.highlighted').length > 2){
-                if($(this).hasClass('highlightable')){
-                    $(this).addClass('highlighted')
-                }
-            } else {
-                console.log('whoops')
-            }
+            } else { }
         }
     }).on('mouseup', function () {
         isMouseDown = false;
@@ -316,9 +319,7 @@
             highlightedItems = $('.highlighted'),
             allHighlights = $('.highlighted').length;
 
-
         var first_iteration = true;
-        console.log(allHighlights);
 
         highlightedItems.each(function(){
         var thisRow = $(this).data('row'),
@@ -337,9 +338,6 @@
             allCols.push(thisCol);
             allRows.push(thisRow);
         } 
-
-        console.log(allCols)
-        console.log(allRows)
         });
     });
 
