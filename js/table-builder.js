@@ -229,7 +229,7 @@
 
         var firstitem = $('.highlighted').first();
         var mergedNum = $('.highlighted').length;
-        
+
         var colNum = firstitem.data('col'),
             rowNum = firstitem.data('row');
 
@@ -237,8 +237,18 @@
 
         $(this).attr('rowspan', mergedNum);
 
-        firstitem.nextUntil('.cell:not(.highlighted)').hide();
         TD.attr('colspan', mergedNum);
+
+        firstitem.nextUntil('.cell:not(.highlighted)').hide().addClass('hidden');
+        $('.highlighted.hidden').each(function(){
+
+            var $this = $(this),
+                thiscolNum = $this.data('col'),
+                thisrowNum = $this.data('row');
+
+            $('td[data-col="' + thiscolNum + '"][data-row="' + thisrowNum + '"]').hide();
+        });
+
         
     });
 
@@ -258,6 +268,8 @@
             $('.highlight-focus').removeClass('highlight-focus');
             $('.highlighted').removeClass("highlighted");
             $('.highlightable').removeClass('highlightable');
+            $('.merge-row').removeClass('merge-row');
+            $('.hidden').removeClass('hidden');
 
             if(event.shiftKey) {
                 isMouseDown = true;
@@ -286,15 +298,20 @@
             if(highlighted.length === 1){
                 $this.addClass("highlighted");
 
+                var mergeColBtn = $('.merge-group'),
+                    mergeRowBtn = $('.merge-across');
+
                 if($this.data('col') === initialColPos) {
                     $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
                     previewTable.addClass('merge-col');
-
+                    mergeColBtn.show();
+                    mergeRowBtn.hide();
                 } else if($this.data('row') === initialRowPos){
                     $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
                     $('#row'+ initialRowPos).addClass('highlighted-row')
                     previewTable.addClass('merge-row');
-
+                    mergeRowBtn.show();
+                    mergeColBtn.hide();
                 } else { }
             } else if (highlighted.length > 1) {
                 if($this.hasClass('highlightable')){
