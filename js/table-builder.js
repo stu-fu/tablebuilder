@@ -44,10 +44,10 @@
         $('#preview-table thead tr').append('<th data-col="' + colCount + '">Column ' + colCount + '</th>');
 
         $('#preview-table tbody tr:not(.full-row)').each(function() {
-        var $this = $(this),
-            spot = $this.index() + 1;
-        
-        $this.append('<td data-col="' + colCount + '" data-row="' + spot + '">Col ' + colCount + ' - Row ' + spot + '</td>');
+            var $this = $(this),
+                spot = $this.index() + 1;
+            
+            $this.append('<td data-col="' + colCount + '" data-row="' + spot + '">Col ' + colCount + ' - Row ' + spot + '</td>');
         });
 
         $('#preview-table tbody tr.full-row').each(function() {
@@ -91,17 +91,17 @@
         var currowCount = columnControl.length;
         
         for(var i = 0; i < currowCount; i++) {
-        var colnum = i + 1;
-        var colName = $('.column input[data-col="' + colnum + '"]').val();
-        var input = $('<div class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '">' +
-                        '<input type="text" class="field-edit"' +
-                        'data-col="' + colnum + '" data-row="' + rowCount + '" placeholder="' + colName + '" />' + 
-                        //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
-                        '</div>');
+            var colnum = i + 1;
+            var colName = $('.column input[data-col="' + colnum + '"]').val();
+            var input = $('<div class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '">' +
+                            '<input type="text" class="field-edit"' +
+                            'data-col="' + colnum + '" data-row="' + rowCount + '" placeholder="' + colName + '" />' + 
+                            //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
+                            '</div>');
 
-        $('#row' + rowCount + ' .row-cells').append(input);
+            $('#row' + rowCount + ' .row-cells').append(input);
 
-        tr.append('<td data-col="' + colnum + '" data-row="' + rowCount + '">Col ' + colnum + ' - Row ' + rowCount + '</td>');
+            tr.append('<td data-col="' + colnum + '" data-row="' + rowCount + '">Col ' + colnum + ' - Row ' + rowCount + '</td>');
         }
         
         previewTableBody.append(tr);
@@ -110,7 +110,7 @@
     
     $('.save').on('click', function(){
         tableJSON.push(columnParent, rowParent);
-            var JSONoutput = JSON.stringify(tableJSON);
+        var JSONoutput = JSON.stringify(tableJSON);
         $('.json-output').html(JSONoutput);
     });
 
@@ -239,8 +239,9 @@
 
         TD.attr('colspan', mergedNum);
 
-        firstitem.nextUntil('.cell:not(.highlighted)').hide().addClass('hidden');
-        $('.highlighted.hidden').each(function(){
+        firstitem.nextUntil('.cell:not(.highlighted)').addClass('cellhidden');
+
+        $('.highlighted.cellhidden').each(function(){
 
             var $this = $(this),
                 thiscolNum = $this.data('col'),
@@ -357,23 +358,24 @@
         var first_iteration = true;
 
         highlightedItems.each(function(){
-        var $this = $(this),
-            thisRow = $this.data('row'),
-            thisCol = $this.data('col'),
-            allCols = [],
-            allRows = [],
-            TD = $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]');
+            var $this = $(this),
+                thisRow = $this.data('row'),
+                thisCol = $this.data('col'),
+                allCols = [],
+                allRows = [],
+                TD = $('td[data-row="' + thisRow + '"][data-col="' + thisCol + '"]');
 
-        if (first_iteration == true) {
-            TD.addClass('highlighted').attr('rowspan', allHighlights);
-            allCols.push(thisCol);
-            allRows.push(thisRow);
-            first_iteration = false;
-        } else {
-            TD.addClass('highlighted').hide();
-            allCols.push(thisCol);
-            allRows.push(thisRow);
-        } 
+            if (first_iteration == true) {
+                $('.cell.highlighted:not(.first-highlight)').addClass('cellhidden')
+                TD.addClass('highlighted').attr('rowspan', allHighlights);
+                allCols.push(thisCol);
+                allRows.push(thisRow);
+                first_iteration = false;
+            } else {
+                TD.addClass('highlighted').hide();
+                allCols.push(thisCol);
+                allRows.push(thisRow);
+            } 
         });
     });
 

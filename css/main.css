@@ -36,6 +36,9 @@ transition:all .3s;
 .cell { cursor:pointer; background:#fff; padding:5px; border:1px solid #ccc; box-shadow:0 0 0 #333; transition:all .3s; }
 .cell:hover { border:1px solid lightblue; background:#ddd; box-shadow:0 0 3px #333; }
 .cell.highlighted { background:lightgreen; }
+.cell.cellhidden { border-left:1px solid transparent; border-right:1px solid transparent; background:#fff; }
+.cell.cellhidden input { visibility:hidden; }
+
 input[type="text"] {
     padding:7px;
     transition:all .3s;
