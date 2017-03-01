@@ -291,19 +291,19 @@ padding-right: 4.8rem
 
 
 .table-prompt { 
-    text-align:center; 
+    /*text-align:center; 
     width:500px; height:300px; 
-    margin:0 auto; padding-top:200px; 
-    position:relative; 
+    margin:0 auto; padding-top:200px; */
+    position:relative; background:lightblue; padding:20px; border:14px solid #eee;
 }
-
+/*
 .table-prompt:before {
     content:''; display:block;
     position:absolute; top:0; left:0; z-index:1;
     width:500px; height:500px; background:lightblue; 
     border-radius:1000px; 
 }
-
+*/
 
 .table-path { position:relative; z-index:2; }
 .table-path h1 { font-size:35px; margin-top:0; }
