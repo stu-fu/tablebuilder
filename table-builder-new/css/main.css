@@ -341,4 +341,7 @@ td:hover svg { fill: #0277bd }
 .main-controls input[type="checkbox"] { visibility:hidden; }
 
 
-.table-wizard { padding:20px; margin:10px 0; background:#efefef; }
+.table-wizard { padding:40px; margin:10px 0; background:#efefef; }
+.table-wizard ul { list-style:none; margin:0 0 20px; padding:0; }
+.table-wizard li { padding:7px 0; }
+.table-wizard input[type="number"] { width:50px; }

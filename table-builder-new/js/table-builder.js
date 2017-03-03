@@ -18,8 +18,14 @@ $(function(){
         var tableWizard = $('<div class="table-wizard"></div>');
 
         tableWizard.append('<h2>Table Title</h2><input class="table-title" type="text" />' +
-                            '<div class="table-properties"><input type="checkbox" /><label>Row Header</label><input type="checkbox" /><label>Column Headers</label></div>'+
-                            '<button class="button start-table">Start Table</button>');
+                            '<h2>Table Summary</h2><input class="table-summary" type="text" />' +
+                            '<div class="table-properties"><h2>Table Properties</h2>' + 
+                            '<ul><li><input type="checkbox" id="has-row-headers" checked/> <label id="has-row-headers">Row Headers</label></li>' +
+                            '<li><input type="checkbox" id="has-col-headers" checked /> <label for="has-col-headers">Column Headers</label></li>' +
+                            '<li><input type="number" min="1" value="1" id="starting-cols" /> <label for="starting-cols">Starting Columns</li>' +
+                            '<li><input type="number" min="1" value="1" id="staring-rows" /> <label for="starting-rows">Starting Rows</li></ul></div>' +
+                            '<button class="button start-table"><svg class="icon icon-arrow-right2"><use xlink:href="#icon-arrow-right2"></use></svg> Generate Table</button>');
+
         builderWrap.append(tableWizard);
 
         $('.start-table').on('click', function(){

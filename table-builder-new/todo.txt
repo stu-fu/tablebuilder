@@ -54,4 +54,4 @@
     - More than one footnote per cell?
     - Widths of cells? 
     - Limit columns?
-    
+    - What table properties?
