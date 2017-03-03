@@ -1,0 +1,57 @@
+
+
+******* TODO ********
+
+- Column Headers
+    - Ability to add column headers
+    - Ability to merge column headers
+
+- Rows/columns    
+    - Ability to insert row above or below
+    - Ability to insert column to left or right
+    - Ability to delete column/row
+        - Alert of losing data on deleting cells
+    - Merging
+        - Ability to merge entire column/row
+        - Allow only selection of prev/next cells
+        - Do not allow merging accross already merged row/cell
+        - Alert of losing data on merging cells
+
+- Dual Axis vs. simple table selection
+
+- Add widths to columns
+
+- Cell 
+    - Linking features
+        - Add/remove footnote from cell
+        - Add/remove link to cell
+        - Add/remove abbr to cell
+    - Formatting features
+        - Bold
+        - Italic
+
+- Footnotes
+    - Insert footnote between
+    - Edit footnote
+
+- Large items
+    - JSON
+    - Add accessibility features
+    - Undo feature?
+
+
+
+
+
+******* DONE ********
+
+
+
+
+
+
+******* QUESTIONS ********
+    - More than one footnote per cell?
+    - Widths of cells? 
+    - Limit columns?
+    
