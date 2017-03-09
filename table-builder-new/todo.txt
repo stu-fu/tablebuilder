@@ -16,6 +16,7 @@
         - Allow only selection of prev/next cells
         - Do not allow merging accross already merged row/cell
         - Alert of losing data on merging cells
+        - Allow unmerge
 
 - Dual Axis vs. simple table selection
 
@@ -29,17 +30,22 @@
     - Formatting features
         - Bold
         - Italic
+        - Underline
+        - Background color
+        - Super/Sub script
+        - Strikethrough
+        - Alignment
+        
 
 - Footnotes
     - Insert footnote between
-    - Edit footnote
 
 - Large items
     - JSON
     - Add accessibility features
     - Undo feature?
 
-
+- Multiselect?
 
 
 
@@ -52,6 +58,10 @@
 
 ******* QUESTIONS ********
     - More than one footnote per cell?
+        - Yes
     - Widths of cells? 
+        - Set options
     - Limit columns?
+        - No
     - What table properties?
+        - 
