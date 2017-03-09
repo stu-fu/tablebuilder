@@ -15,6 +15,7 @@ $(function(){
         direction: 'vertical' 
     });
 
+
     // ** ADD COLUMN ** //
 
     function addColumn() {
@@ -31,7 +32,7 @@ $(function(){
             var $this = $(this),
                 rowid = $this.attr('id').replace('row', '');
 
-            $this.append('<td class="cell" data-col="' + colCount + '" data-row="' + rowid + '"></td>');
+            $this.append('<td class="cell" data-col="' + colCount + '" data-row="' + rowid + '"><div class="cell-content"></div><textarea></textarea></td>');
         });
     }
 
@@ -55,7 +56,7 @@ $(function(){
         for (var i = 0; i < currowCount; i++) {
             var colnum = i + 1;
             var colName = $('.column input[data-col="' + colnum + '"]').val();
-            var input = $('<td class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '"></td>');
+            var input = $('<td class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '"><div class="cell-content"></div><textarea></textarea></td>');
             
             $('#row' + rowCount).append(input);
         }
@@ -407,11 +408,6 @@ $(function(){
                 case 1:
 
                     //$('.cell-content').blur().attr('contenteditable', 'false');
-
-                    if(!$this.is(':focus')){
-                        $this.attr('contenteditable', 'true');
-                        $this.focus();
-                    }
 
                     if (event.shiftKey && !$this.hasClass('cellhidden')) {
                         isMouseDown = true;

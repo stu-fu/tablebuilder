@@ -65,7 +65,7 @@ body { padding:30px; }
 .table-construct input[type="text"]:disabled {
     background:transparent;
     border:2px solid transparent;
-    cursor:pointer;
+    /*cursor:pointer;*/
     visibility:hidden;
 }
 
@@ -131,7 +131,7 @@ td {
 
 td:hover {
     color: #0277bd;
-    cursor: pointer
+    /*cursor: pointer*/
 }
 
 td:hover svg { fill: #0277bd }
@@ -352,8 +352,8 @@ td:hover svg { fill: #0277bd }
 }
 .footnote-number:hover + .footnote-content { display:block; }
 
-.show-instructions { margin-bottom:10px; float:right; }
-.instructions { display:none; float:right; clear:both; }
+.show-instructions { margin-top:10px; }
+.instructions { display:none; clear:both; }
 
 .table-step { float:left; }
 .table-step h1 { margin:0 30px 0 0; display:inline-block;}
