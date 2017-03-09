@@ -2,64 +2,179 @@ $(function(){
 
 
     // ** CONSTANTS ** //
+
     var builderWrap = $('.table-builder-wrap'),
         tablePrompt = $('<div class="table-prompt"></div>'),
         tablePathStepOne = $('<div class="table-path step-one"></div>'),
         tablePathStepTwo = $('<div class="table-path step-two"></div>');
 
+    var drake = dragula({
+        isContainer: function (el) {
+            return false; // only elements in drake.containers will be taken into account
+        },
+        direction: 'vertical' 
+    });
+
+    // ** ADD COLUMN ** //
+
+    function addColumn() {
+        var rowControl = builderWrap.find('.row');
+
+        var colCount = $('.column').length + 1,
+            rowCount = rowControl.length;
+
+        var column = '<th class="column" id="col' + colCount + '"><input type="text" data-col="' + colCount + '" placeholder="Column ' + colCount + '" /></th>';
+
+        $('.columns').append(column);
+
+        rowControl.each(function () {
+            var $this = $(this),
+                rowid = $this.attr('id').replace('row', '');
+
+            $this.append('<td class="cell" data-col="' + colCount + '" data-row="' + rowid + '"></td>');
+        });
+    }
+
+
+    // ** ADD ROW ** //
+
+    function addRow() {
+        var columnControl = $('.column');
+
+        var rowCount = $('.row').length + 1;
+
+        var row = '<tr class="row" id="row' + rowCount + '" data-tree="1" data-group="row' + rowCount + '"></tr>';
+
+        $('.rows').append(row);
+
+        var currowCount = columnControl.length;
+
+        drake.containers.push(document.querySelector('#rows'));
+
+        $('#row' + rowCount).append('<td class="number-set"><input type="number" value="1" min="1" max="8" /></td>');
+        for (var i = 0; i < currowCount; i++) {
+            var colnum = i + 1;
+            var colName = $('.column input[data-col="' + colnum + '"]').val();
+            var input = $('<td class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '"></td>');
+            
+            $('#row' + rowCount).append(input);
+        }
+    }
 
 
     // ** TABLE WIZARD ** //
-    function tableWizard() {
 
+    function tableWizard() {
         $('.steptwo').addClass('active');
         $('.table-step h1').text("Set table properties");
 
         var tableWizard = $('<div class="table-wizard"></div>');
+        var tableProperties = '<div class="table-properties"><h2>Table Properties</h2><ul>' +
+                                    '<li><input type="checkbox" id="has-row-headers" checked /> <label id="has-row-headers">Row Headers</label></li>' +
+                                    '<li><input type="checkbox" id="has-col-headers" checked /> <label for="has-col-headers">Column Headers</label></li>' +
+                                    '<li><input type="number" min="1" value="1" id="starting-cols" /> <label for="starting-cols">Starting Columns</li>' +
+                                    '<li><input type="number" min="1" value="1" id="staring-rows" /> <label for="starting-rows">Starting Rows</li></ul></div>' +
+                              '</ul></div>';
 
         tableWizard.append('<h2>Table Title</h2><input class="table-title" type="text" />' +
-                            '<h2>Table Summary</h2><input class="table-summary" type="text" />' +
-                            '<div class="table-properties"><h2>Table Properties</h2>' + 
-                            '<ul><li><input type="checkbox" id="has-row-headers" checked/> <label id="has-row-headers">Row Headers</label></li>' +
-                            '<li><input type="checkbox" id="has-col-headers" checked /> <label for="has-col-headers">Column Headers</label></li>' +
-                            '<li><input type="number" min="1" value="1" id="starting-cols" /> <label for="starting-cols">Starting Columns</li>' +
-                            '<li><input type="number" min="1" value="1" id="staring-rows" /> <label for="starting-rows">Starting Rows</li></ul></div>' +
-                            '<button class="button start-table"><svg class="icon icon-arrow-right2"><use xlink:href="#icon-arrow-right2"></use></svg> Generate Table</button>');
+                           '<h2>Table Summary</h2><input class="table-summary" type="text" />' +
+                           tableProperties +
+                           '<button class="button start-table"><svg class="icon icon-arrow-right2"><use xlink:href="#icon-arrow-right2"></use></svg> Generate Table</button>');
 
         builderWrap.append(tableWizard);
 
         $('.start-table').on('click', function(){
+            var tableTitle = $('.table-title').val();
+            var colNums = Number($('#starting-cols').val()) + 1;
+            var rowNums = Number($('#staring-rows').val()) + 1;
+
             builderWrap.empty();
-            tableBuild();
-        })
+
+            tableBuild({title: tableTitle, columnNumbers: colNums, rowNumbers: rowNums});
+        });
     }
 
 
     // ** TABLE BUILD ** //
-    function tableBuild() {
+
+    function tableBuild(opt) {
+
+        var defaults = {
+            title: '',
+            columnNumbers: 1,
+            rowNumbers: 1
+        };
+
+        var options = $.extend(defaults, opt);
+
         $('.stepthree').addClass('active');
         $('.table-step h1').text("Create table");
+
         var tableBuilder = $('<div class="table-builder"></div>');
         var rows = $('.rows');
         var columns = $('.columns');
 
 
+        var tableControls = '<div class="main-controls"><h2>Table Controls</h2>' + 
+                                '<button class="add-col button"><svg class="icon icon-arrow-right2"><use xlink:href="#icon-arrow-right2"></use></svg> Add Column</button>' + 
+                                '<button class="add-row button"><svg class="icon icon-arrow-down2"><use xlink:href="#icon-arrow-down2"></use></svg> Add Row</button>' + 
+                            '</div>';
+
+        var customControls = '<div class="custom-controls">' +
+                                '<div class="column-controls"><h2>Columns</h2><button class="button merge-group">Merge Column Cells</button></div>' +
+                                '<div class="row-controls"><h2>Rows</h2><button class="button merge-across">Merge Row Cells</button></div>' +
+                                '<div class="cell-controls"><h2>Cell Controls</h2><button class="button footnote-to-cell"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnote to Cell</button><div class="footnote-group"><ol></ol></div></div>' +
+                             '</div>'
+
         /***** Create Table Builder *****/
 
-        tableBuilder.append('<div class="table-controls">' +
-                            '<div class="main-controls"><h2>Table Controls</h2><br /><button class="add-col button"><svg class="icon icon-arrow-right2"><use xlink:href="#icon-arrow-right2"></use></svg> Add Column</button><button class="add-row button"><svg class="icon icon-arrow-down2"><use xlink:href="#icon-arrow-down2"></use></svg> Add Row</button></div>' +
-                            '<div class="custom-controls">' + 
-                            '<div class="column-controls"><h2>Columns</h2><button class="button merge-group">Merge Column Cells</button></div>' +
-                            '<div class="row-controls"><h2>Rows</h2><button class="button merge-across">Merge Row Cells</button></div>' +
-                            '<div class="cell-controls"><h2>Cell Controls</h2><button class="button footnote-to-cell"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnote to Cell</button><div class="footnote-group"><ol></ol></div></div>' +
-                            '</div>' + 
+        tableBuilder.append('<div class="table-controls">' + tableControls + customControls + '</div>' +
+                            '<div class="table-construct">' + 
+                                '<div class="title-edit"><input class="table-title" type="text" placeholder="Table Title" /></div>' + 
+                                '<table cellspacing="0" cellpadding="0"><thead><tr class="columns"></tr></thead><tbody id="rows" class="rows"></tbody></table>' +
                             '</div>' +
-                            '<div class="table-construct"><h2>Workspace</h2><div class="title-edit"><input class="table-title" type="text" placeholder="Table Title" /></div><div class="columns"></div><div class="rows"></div></div>' +
-                            '<button class="add-footnotes button"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnotes</button><div class="footnote-list"></div><br /><br /><button class="save button"><svg class="icon icon-floppy-disk"><use xlink:href="#icon-floppy-disk"></use></svg><span class="name"> icon-floppy-disk</span> Save</button>');
+                            '<button class="add-footnotes button"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnotes</button>' + 
+                            '<div class="footnote-list"></div>' + 
+                            '<br /><br /><button class="save button"><svg class="icon icon-floppy-disk"><use xlink:href="#icon-floppy-disk"></use></svg><span class="name"> icon-floppy-disk</span> Save</button>');
           
         builderWrap.append(tableBuilder);
-        builderWrap.append('<h2>Preview Table</h2><h4 class="headline-section-sub"></h4><table id="preview-table"><thead><tr></tr></thead><tbody></tbody></table>');
 
+
+        
+
+        /***** CREATE CUSTOM ITEMS FROM WIZARD *****/
+
+        $('.table-title').val(options.title);
+        $('.columns').append('<th style="background:transparent"></th>');
+        for (var i = 1; i < options.columnNumbers; i++) { addColumn(i); console.log('column') }
+        for (var i = 1; i < options.rowNumbers; i++) { addRow(i); console.log('row') }
+
+
+        $('.number-set input').on('change', function(){
+            var $this = $(this),
+                val = $this.val(),
+                tr = $this.closest('tr'),
+                prevTr = tr.prev(),
+                topRow = tr.prevUntil('tr[data-tree="1"]'),
+                topGroup = topRow.data('group'),
+                prevTrTree = prevTr.data('tree'),
+                prevTrId = prevTr.data('group');
+
+            tr.attr('data-tree', val);
+
+            if (Number(prevTrTree) < Number(val) && Number(prevTrTree) != 1) {
+                console.log('previous is less than this but not 1');
+                console.log(topGroup);
+                tr.attr('data-group', topGroup);
+            } else if (Number(prevTrTree) == 1) {
+                console.log('previous is 1');
+                tr.attr('data-group', prevTrId);
+            } else {
+                console.log('something else');
+            }
+        });
+
+        /***** FOOTNOTES *****/
 
         $('.add-footnotes').on('click', function () {
             $(this).attr('disabled', 'disabled').text('Footnotes');
@@ -77,6 +192,7 @@ $(function(){
             if (inputVal.length > 0) {
                 $this.text('-').addClass('remove-footnote').removeClass('add-footnote');
                 input.attr('disabled','disabled');
+
                 $('.footnote-list ol').append('<li><input type="text" class="footnote" data-footnote="' + thisPos + '" /><button class="add-footnote">+</button></li>');
                 $('.table-notes ol').append('<li class="table-note" data-footnotepos="' + thisPos + '">' + inputVal + '</li>')
                 $('.footnote-group ol').append('<li class="table-note" data-footnotepos="' + thisPos + '"><div class="footnote-val">' + inputVal + '</div><button class="add-footnote-to-cell">Add</button></li>')
@@ -104,30 +220,6 @@ $(function(){
                 text = $this.val();
 
             $('.headline-section-sub').text(text);
-        });
-
-
-        /***** UPDATING COLUMN TEXT *****/
-
-        $('.columns').on('keyup', 'input', function () {
-            var $this = $(this),
-                col = $this.data('col'),
-                text = $this.val();
-
-            $('th[data-col="' + col + '"]').text(text);
-            $('.row input[data-col="' + col + '"]').attr('placeholder', text)
-        });
-
-
-        /***** UPDATING CELL TEXT *****/
-
-        $('.rows').on('keyup', '.field-edit', function () {
-            var $this = $(this),
-                row = $this.data('row'),
-                col = $this.data('col'),
-                val = $this.val();
-
-            $('td[data-col="' + col + '"][data-row="' + row + '"] .cell-content').text(val);
         });
 
 
@@ -197,7 +289,6 @@ $(function(){
             nextRow.find('label').hide();
 
             nextRowCol.attr('disabled', 'disabled');
-            //nextRowCol.next().hide();
 
             if (nextRow.length > 0) {
                 $this.hide();
@@ -234,27 +325,69 @@ $(function(){
         });
 
 
+        /***** SHOW FOOTNOTES TO ADD *****/
+        
         $('.table-builder').on('click', '.footnote-to-cell', function(){
             $('.footnote-group').show();
         });
 
-        $('.table-builder').on('click', '.add-footnote-to-cell', function () {
-            var text = $(this).prev().text();
-            var pos = $(this).parent().index() + 1;
-            var thisrowNum = $('.cur-highlight').data('row');
-            var thiscolNum = $('.cur-highlight').data('col');
 
-            $('.cur-highlight').append('<div class="footnote-number">' + pos + '</div>');
-            $('td[data-col="' + thiscolNum + '"][data-row="' + thisrowNum + '"]').append('<div class="footnote-number">' + pos + '</div>');
-            $('td[data-col="' + thiscolNum + '"][data-row="' + thisrowNum + '"]').append('<div class="footnote-content">' + text + '</div>');
+        /***** ADD FOOTNOTE TO CELL *****/
+
+        $('.table-builder').on('click', '.add-footnote-to-cell', function() {
+            var $this = $(this),
+                currentHighlight = $('.cur-highlight'),
+                text = $this.prev().text(),
+                pos = $this.parent().index() + 1,
+                thisrowNum = currentHighlight.data('row'),
+                thiscolNum = currentHighlight.data('col'),
+                matchingTD = $('td[data-col="' + thiscolNum + '"][data-row="' + thisrowNum + '"]');
+
+            currentHighlight.append('<div class="footnote-number">' + pos + '</div>');
+            matchingTD.append('<div class="footnote-number">' + pos + '</div>')
+                      .append('<div class="footnote-content">' + text + '</div>');
         });
 
+        function removeAllRanges() {
+            var range = window.getSelection().getRangeAt(0);
+            var node = $(range.commonAncestorContainer)
+            var nodeChild = node.find('strong');
+            if (node.parent().is('strong')) {
+                node.unwrap();
+            }
+        }
+
+        function surroundSelection() {
+            var span = document.createElement("strong");
+
+            if (window.getSelection) {
+                var sel = window.getSelection();
+                if (sel.rangeCount) {
+                    var range = sel.getRangeAt(0).cloneRange();
+                    range.surroundContents(span);
+                    removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        }
 
         /***** RIGHT CLICK FUNCTIONALITY *****/
 
         var isMouseDown = false,
             initialColPos, initialRowPos;
+
+
+        $('.boldtext').on('click', function () {
+            surroundSelection();
+        });
+
+        $('.removeboldtext').on('click', function () {
+            removeAllRanges();
+        });
+
         $('.rows').on('mousedown', '.cell', function () {
+            var $this = $(this);
+
             $('.highlight-focus').removeClass('highlight-focus');
             $('.highlighted').removeClass("highlighted");
             $('.highlightable').removeClass('highlightable');
@@ -265,10 +398,20 @@ $(function(){
             $('.column-controls').hide();
             $('.row-controls').hide();
 
+            if (!$this.is(':focus')) {
+                $this.attr('contenteditable', 'true');
+                $this.focus();
+            }
+
             switch (event.which) {
                 case 1:
 
-                    var $this = $(this);
+                    //$('.cell-content').blur().attr('contenteditable', 'false');
+
+                    if(!$this.is(':focus')){
+                        $this.attr('contenteditable', 'true');
+                        $this.focus();
+                    }
 
                     if (event.shiftKey && !$this.hasClass('cellhidden')) {
                         isMouseDown = true;
@@ -280,13 +423,12 @@ $(function(){
                             $this.addClass("highlighted");
                         }
                     }
-                    return false;
                     break;
                 case 2:
                     break;
                 case 3:
-                    $(this).addClass('cur-highlight');
-                    $(this).addClass("highlighted");
+                    $this.addClass('cur-highlight');
+                    $this.addClass("highlighted");
                     $('.cell-controls').show();
                     if ($('.footnote-group li').length > 0) {
                         $('.footnote-to-cell').show();
@@ -332,6 +474,7 @@ $(function(){
             switch (event.which) {
                 case 1:
                     isMouseDown = false;
+                    //$('.cell-content').blur().attr('contenteditable', 'false');
                     break;
                 case 2:
                     break;
@@ -347,10 +490,6 @@ $(function(){
 
 
         /***** UPDATING CELL TEXT *****/
-
-        $('.rows').on('click', '.cell', function () {
-            $(this).find('input').focus();
-        });
 
         $('.table-builder').on('contextmenu', '.highlighted', function (e) {
             e.preventDefault();
@@ -397,6 +536,7 @@ $(function(){
 
 
     // ** TABLE BUILD SELECTION ** //
+
     function tableCreate(type) {
         if(type == "new") {
             builderWrap.empty();
@@ -416,6 +556,7 @@ $(function(){
 
 
     // ** START SCREEN ** //
+
     function tableStart() {
         $('.stepone').addClass('active');
 
@@ -439,6 +580,7 @@ $(function(){
 
 
     // ** BACK BUTTON** //
+
     $('body').on('click', '.back', function(){
         tablePathStepTwo.empty().remove();
         tablePathStepOne.show();
@@ -449,139 +591,31 @@ $(function(){
 
 
     // ** INIT ** //
+
     tableStart();
 
+
+
+    /***** BUTTON CLICKS *****/
     
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-    
-
-    /***** CONSTANTS *****/
-
-    var addColBtn = $('.add-col'),
-        addRowBtn = $('.add-row'),
-    
-        columnGroup = $('.columns'),
-        rowGroup = $('.rows'),
-            
-        previewTable = $('#preview-table'),
-        previewTableHead = previewTable.children('thead'),
-        previewTableBody = previewTable.children('tbody');
-    
-    var tableJSON = [],
-        JSONoutput;
-    var columnJson = [];
-    var rowJson = [];
-    var columnParent = { 'Columns': columnJson };
-    var rowParent = { 'Rows': rowJson };
-    
-
-
-    /***** ADD COLUMN *****/
-    
+    // Add Col
     builderWrap.on('click', '.add-col', function(e) {
-
-        var columnControl = $('.column'),
-            rowControl = $('.row');
-        
-        var colCount = columnControl.length + 1,
-            rowCount = rowControl.length;
-        
-        var column = '<div class="column" id="col' + colCount + '">' +
-                    '<input type="text" data-col="' + colCount + '" placeholder="Column ' + colCount + '" /></div>';
-        
-        $('.columns').append(column);
-        
-        var columnJsonItem = { 'column': colCount };
-        
-        columnJson.push(columnJsonItem)
-
-        
-        $('#preview-table thead tr').append('<th data-col="' + colCount + '"></th>');
-
-        $('#preview-table tbody tr:not(.full-row)').each(function() {
-            var $this = $(this),
-                spot = $this.index() + 1;
-            
-            $this.append('<td data-col="' + colCount + '" data-row="' + spot + '"><div class="cell-content"></div></td>');
-        });
-
-        $('#preview-table tbody tr.full-row').each(function() {
-            $(this).find('td').attr('colspan', colCount);
-        });
-        
-        rowControl.each(function() {
-            var $this = $(this),
-                rowid = $this.attr('id').replace('row', '');
-
-            if(!$this.hasClass('full-row')){
-                $this.find('.row-cells').append('<div class="cell"' + ' data-col="' + colCount + '" data-row="' + rowid + '">' +
-                            '<input type="text" class="field-edit"' +
-                            'data-col="' + colCount + '" data-row="' + rowid + '" placeholder="" />' + 
-                            //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
-                            '</div>');
-            }
-        });
+        addColumn();
     }); 
-    
         
-    /***** ADD ROW *****/
-    
+    // Add Row
     builderWrap.on('click', '.add-row', function(e) {
-        var columnControl = $('.column'),
-            rowControl = $('.row');
-        
-        var rowCount = rowControl.length + 1;
-        var row = '<div class="row" id="row' + rowCount + '">' +
-                //'<p>Row ' + rowCount + '</p>' +
-                //'<div><label><input type="checkbox" class="full" /> Full row</label></div>' +
-                '<div class="row-cells"></div></div>';
-
-        $('.rows').append(row);
-        
-        var rowJsonItem = { 'row': rowCount };
-        
-        rowJson.push(rowJsonItem)
-
-        var tr = $('<tr data-row="' + rowCount + '"></tr>');
-        var currowCount = columnControl.length;
-        
-        for(var i = 0; i < currowCount; i++) {
-            var colnum = i + 1;
-            var colName = $('.column input[data-col="' + colnum + '"]').val();
-            var input = $('<div class="cell"' + ' data-col="' + colnum + '" data-row="' + rowCount + '">' +
-                            '<input type="text" class="field-edit"' +
-                            'data-col="' + colnum + '" data-row="' + rowCount + '" placeholder="' + colName + '" />' + 
-                            //'<div><a href="#" class="merge-down">Merge Down</a></div>' +
-                            '</div>');
-
-            $('#row' + rowCount + ' .row-cells').append(input);
-
-            tr.append('<td data-col="' + colnum + '" data-row="' + rowCount + '"><div class="cell-content"></div></td>');
-        }
-        
-        $('#preview-table tbody').append(tr);
+        addRow();
     });
     
-    
+    // Save Table
     $('.save').on('click', function(){
         tableJSON.push(columnParent, rowParent);
         var JSONoutput = JSON.stringify(tableJSON);
         $('.json-output').html(JSONoutput);
     });
 
+    // Show instructions
     $('.show-instructions').on('click', function(e) {
         $('.instructions').toggle();
     });

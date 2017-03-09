@@ -179,7 +179,6 @@
         <div class="table-step"><h1>Create or import a new table</h1><span class="stepone">1</span><span class="steptwo">2</span><span class="stepthree">3</span></div>
         <button class="show-instructions button"><svg class="icon icon-question"><use xlink:href="#icon-question"></use></svg><span class="name"> icon-question</span> Instructions</button>
         <div class="instructions">
-            <p><strong>Instructions:</strong></p> 
             <ul>
                 <li>Add columns and rows using the buttons below. </li>
                 <li>Highlight cells by holding down your left mouse button and the shift key. </li>
@@ -188,6 +187,7 @@
             </ul>
         </div>
 
+        <input type="button" class="boldtext" value="test" /><input type="button" class="removeboldtext" value="test remove" />
         <div class="table-builder-wrap">
           <!--<button class="add-col button">Add Column</button>
           <button class="add-row button">Add Row</button>
@@ -216,6 +216,7 @@
         <div class="json-output"></div>-->
 
         <script src="js/vendor/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js"></script>
         <script src="js/table-builder.js"></script>
     </body>
 </html>
