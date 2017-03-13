@@ -133,7 +133,7 @@ $(function(){
                             '<div class="table-construct">' + 
                                 '<div class="title-edit"><input class="table-title" type="text" placeholder="Table Title" /></div>' + 
                                 '<table cellspacing="0" cellpadding="0"><thead><tr class="columns"></tr></thead><tbody id="rows" class="rows"></tbody></table>' +
-                            '</div>' +
+                            '</div>' + 
                             '<button class="add-footnotes button"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnotes</button>' + 
                             '<div class="footnote-list"></div>' + 
                             '<br /><br /><button class="save button"><svg class="icon icon-floppy-disk"><use xlink:href="#icon-floppy-disk"></use></svg><span class="name"> icon-floppy-disk</span> Save</button>');
