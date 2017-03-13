@@ -145,13 +145,13 @@ $(function(){
 
         /***** CREATE CUSTOM ITEMS FROM WIZARD *****/
 
-        $('.table-title').val(options.title);
+        $('.table-title').val(options.title).attr('disabled', 'disabled');
         $('.columns').append('<th style="background:transparent"></th>');
         for (var i = 1; i < options.columnNumbers; i++) { addColumn(i); console.log('column') }
         for (var i = 1; i < options.rowNumbers; i++) { addRow(i); console.log('row') }
 
 
-        $('.number-set input').on('change', function(){
+        builderWrap.on('change', '.number-set input', function(){
             var $this = $(this),
                 val = $this.val(),
                 tr = $this.closest('tr'),
