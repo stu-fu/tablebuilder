@@ -25,8 +25,12 @@ $(function(){
             rowCount = rowControl.length;
 
         var column = '<th class="column" id="col' + colCount + '"><input type="text" data-col="' + colCount + '" placeholder="Column ' + colCount + '" /></th>';
+        //var columnGroup = '<col></col>';
+
 
         $('.columns').append(column);
+
+        //$('colgroup').append(columnGroup);
 
         rowControl.each(function () {
             var $this = $(this),
@@ -132,16 +136,17 @@ $(function(){
         tableBuilder.append('<div class="table-controls">' + tableControls + customControls + '</div>' +
                             '<div class="table-construct">' + 
                                 '<div class="title-edit"><input class="table-title" type="text" placeholder="Table Title" /></div>' + 
-                                '<table cellspacing="0" cellpadding="0"><thead><tr class="columns"></tr></thead><tbody id="rows" class="rows"></tbody></table>' +
+                                '<table cellspacing="0" cellpadding="0"><colgroup></colgroup><thead><tr class="columns"></tr></thead><tbody id="rows" class="rows"></tbody></table>' +
                             '</div>' + 
-                            '<button class="add-footnotes button"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnotes</button>' + 
+                            '<div class="footnotes-control"><button class="add-footnotes button"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnotes</button></div>' + 
                             '<div class="footnote-list"></div>' + 
-                            '<br /><br /><button class="save button"><svg class="icon icon-floppy-disk"><use xlink:href="#icon-floppy-disk"></use></svg><span class="name"> icon-floppy-disk</span> Save</button>');
+                            '<div class="final-controls">' + 
+                                '<button class="save button"><svg class="icon icon-floppy-disk"><use xlink:href="#icon-floppy-disk"></use></svg><span class="name"> icon-floppy-disk</span> Save</button>' + 
+                                '<button class="preview button"><svg class="icon icon-eye"><use xlink:href="#icon-eye"></use></svg> Preview</button>' + 
+                            '</div>');
           
         builderWrap.append(tableBuilder);
 
-
-        
 
         /***** CREATE CUSTOM ITEMS FROM WIZARD *****/
 
@@ -149,6 +154,17 @@ $(function(){
         $('.columns').append('<th style="background:transparent"></th>');
         for (var i = 1; i < options.columnNumbers; i++) { addColumn(i); console.log('column') }
         for (var i = 1; i < options.rowNumbers; i++) { addRow(i); console.log('row') }
+
+
+
+
+        builderWrap.on('mouseover', '.cell', function () {
+            var thisCol = $(this).data('col');
+            $('.cell[data-col="' + thisCol + '"]').addClass('hovered');
+        }).on('mouseout', '.cell', function () {
+            var thisCol = $(this).data('col');
+            $('.cell[data-col="' + thisCol + '"]').removeClass('hovered');
+        });;
 
 
         builderWrap.on('change', '.number-set input', function(){
@@ -333,6 +349,23 @@ $(function(){
         });
 
 
+
+        $('.cell-content').trumbowyg({
+            autogrow: true,
+            removeformatPasted: true,
+            btns: [
+                ['bold', 'italic']
+                ['formatting'],
+                'btnGrp-semantic',
+                ['superscript', 'subscript'],
+                ['link'],
+                'btnGrp-justify',
+                'btnGrp-lists',
+                ['horizontalRule'],
+                ['removeformat'],
+            ]
+        });
+
         /***** ADD FOOTNOTE TO CELL *****/
 
         $('.table-builder').on('click', '.add-footnote-to-cell', function() {
@@ -386,6 +419,11 @@ $(function(){
             removeAllRanges();
         });
 
+        $('.site-overlay').on('click', function () {
+            $('#trumbowyg-demo').hide();
+            $('.site-overlay').hide();
+        });
+
         $('.rows').on('mousedown', '.cell', function () {
             var $this = $(this);
 
@@ -395,20 +433,28 @@ $(function(){
             $('.merge-row').removeClass('merge-row');
             $('.hidden').removeClass('hidden');
             $('.cur-highlight').removeClass('cur-highlight');
-            $('.cell-controls').hide();
-            $('.column-controls').hide();
-            $('.row-controls').hide();
+
+            //$('.cell-controls').hide();
+            //$('.column-controls').hide();
+            //$('.row-controls').hide();
 
             if (!$this.is(':focus')) {
-                $this.attr('contenteditable', 'true');
-                $this.focus();
+                //$this.attr('contenteditable', 'true');
+                //$this.focus();
             }
+
+            //var wysiwygContent = $('#trumbowyg-demo').trumbowyg('html');
+
+           // $(this).html(wysiwygContent)
+
+            //$('.cell').find('.cell-content').trumbowyg('destroy');
 
             switch (event.which) {
                 case 1:
 
                     //$('.cell-content').blur().attr('contenteditable', 'false');
-
+                    //$('#trumbowyg-demo').show();
+                    //$('.site-overlay').show();
                     if (event.shiftKey && !$this.hasClass('cellhidden')) {
                         isMouseDown = true;
                         if ($('.highlighted').length === 0) {
@@ -551,6 +597,8 @@ $(function(){
 
 
 
+
+
     // ** START SCREEN ** //
 
     function tableStart() {
@@ -589,7 +637,6 @@ $(function(){
     // ** INIT ** //
 
     tableStart();
-
 
 
     /***** BUTTON CLICKS *****/
