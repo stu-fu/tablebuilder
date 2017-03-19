@@ -347,7 +347,7 @@ $(function(){
         $('.table-builder').on('click', '.footnote-to-cell', function(){
             $('.footnote-group').show();
         });
-
+ 
 
 
         $('.cell-content').trumbowyg({
