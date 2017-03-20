@@ -43,14 +43,17 @@ body { padding:30px; }
 .highlighted { background:#ccc; }
 
 .cell { border:0; padding:7px; position:relative;  min-width:100px; box-shadow:0 0 0 #333; transition:all .3s; height:2.8em; background:#fff; border-bottom:1px solid #ccc; }
+.cell p { margin:0; }
 .cell:hover { background:#ddd; /*box-shadow:0 0 3px #333;*/ }
 .cell.highlighted textarea, .cell.highlighted { background:lightgreen; }
 .cell.cellhidden textarea { background:#fff; }
 .cell.cellhidden textarea { visibility:hidden; }
 .cell-content { 
-    position:absolute; left:0; top:0;width:100%; height:100%;
+    left:0; top:0; 
+    margin-top:25px;
+    width:100%; height:100%;
     z-index:999; 
-    background:#fff; color:#000; padding:7px; box-sizing: border-box; left:0; top:0; }
+    color:#000; padding:7px; box-sizing: border-box; left:0; top:0; }
 
 .number-set input { width:30px; }
 
@@ -289,7 +292,7 @@ td:hover svg { fill: #0277bd }
     background: #ddd;
 }
 
-.table-builder-wrap { clear:both; margin-top:55px; }
+.table-builder-wrap { clear:both; margin-top:15px; }
 
 .table-prompt { position:relative; background:#eee; padding:20px; border:14px solid #eee; }
 
@@ -394,11 +397,18 @@ td:hover svg { fill: #0277bd }
 .footnote { padding:5px; }
 .add-footnote, .remove-footnote { background:transparent; border:0; font-weight:bold; color:#036; cursor:pointer; font-size:20px;margin-top:5px; }
 
-.row:hover .cell, .cell.hovered { background:#eee; }
+.row:hover .cell, .cell.hovered  { background:#eee; }
 
 /*
 .site-overlay { display:none; position:fixed; top:0; left:0; height:100vh; width:100%; background:rgba(0,0,0,0.8); z-index:9999; }
 .trumbowyg-box { position: absolute !important; width: 700px !important; height: 200px; left: 30%; top: 35%; z-index: 99999; display:none; background:#fff; }*/
 
-.trumbowyg-box, .trumbowyg-editor { min-height:100px; }
-.trumbowyg-button-pane { position:fixed; top:0; left:0; width:100%; z-index:99999; }
+.cell { overflow:hidden; }
+.in-cell-options { position:absolute; top:-23px; left:0; width:100%; background:#ccc; z-index:9999; transition:all .4s; }
+.in-cell-options button { background:transparent; border:0; cursor:pointer; }
+.in-cell-options svg { background:transparent; width:10px; height:10px; }
+.in-cell-edit-save { display:none; }
+.highlighted .in-cell-options { top:0; }
+.trumbowyg-box, .trumbowyg-editor { margin:30px auto 0 !important; min-height:100px !important; z-index:9999; background:#fff; }
+.trumbowyg-button-pane { width:100%; z-index:99999; }
+.trumbowyg-editor { margin-top:0 !important; }
