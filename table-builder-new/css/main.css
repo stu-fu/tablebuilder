@@ -42,12 +42,10 @@ body { padding:30px; }
 
 .highlighted { background:#ccc; }
 
-.cell { border:0; padding:7px; position:relative;  min-width:100px; box-shadow:0 0 0 #333; transition:all .3s; height:2.8em; background:#fff; border-bottom:1px solid #ccc; }
+.cell { border:0; padding:0; overflow:hidden; position:relative;  min-width:100px; box-shadow:0 0 0 #333; transition:all .3s; height:2.8em; background:#fff; border-bottom:1px solid #ccc; }
 .cell p { margin:0; }
 .cell:hover { background:#ddd; /*box-shadow:0 0 3px #333;*/ }
-.cell.highlighted textarea, .cell.highlighted { background:lightgreen; }
-.cell.cellhidden textarea { background:#fff; }
-.cell.cellhidden textarea { visibility:hidden; }
+.cell.highlighted, .cell.highlighted .cell-content { background:lightyellow; }
 .cell-content { 
     left:0; top:0; 
     margin-top:25px;
@@ -57,15 +55,6 @@ body { padding:30px; }
 
 .number-set input { width:30px; }
 
-.cell textarea {
-    display:none;
-    padding:7px;
-    transition:all .3s;
-    position:absolute; top:0; left:0;
-    box-sizing:border-box;
-    width:100%; height:100%;
-    min-height:40px; min-width:95px;
-}
 
 /*.cell.highlighted textarea { display:block; }*/
 .table-construct input[type="text"]:disabled {
@@ -302,6 +291,20 @@ td:hover svg { fill: #0277bd }
 
 .table-construct { padding:20px 45px; margin:10px 0; background:#efefef; }
 
+.cell-controls { position:relative; }
+.footnote-group { 
+    opacity:0;
+    visibility:hidden;
+    top:50px;
+    position: absolute;
+    background: #333;
+    width: 100%;
+    border-radius: 5px;
+    color: #fff;
+    transition:all .7s;
+}
+.footnote-group:before { content:''; display:block; position:absolute; top:-5px; left:15px; border-left:7px solid transparent; border-right:7px solid transparent; border-bottom:7px solid #333; }
+.footnote-group.active { opacity:1; visibility: visible; top:80px; }
 .footnote-list { padding-left:25px; }
 .footnote-list ol { padding:0 35px; }
 .footnote-list li { padding:8px 0; }
@@ -325,6 +328,7 @@ td:hover svg { fill: #0277bd }
     background:transparent;
     color:#036;
 }
+.table-controls .button[disabled] { cursor:default; opacity:0.4 }
 .table-controls .button svg {
     top:0; left:0;
     fill:#036;
@@ -403,12 +407,12 @@ td:hover svg { fill: #0277bd }
 .site-overlay { display:none; position:fixed; top:0; left:0; height:100vh; width:100%; background:rgba(0,0,0,0.8); z-index:9999; }
 .trumbowyg-box { position: absolute !important; width: 700px !important; height: 200px; left: 30%; top: 35%; z-index: 99999; display:none; background:#fff; }*/
 
-.cell { overflow:hidden; }
+
 .in-cell-options { position:absolute; top:-23px; left:0; width:100%; background:#ccc; z-index:9999; transition:all .4s; }
 .in-cell-options button { background:transparent; border:0; cursor:pointer; }
 .in-cell-options svg { background:transparent; width:10px; height:10px; }
 .in-cell-edit-save { display:none; }
-.highlighted .in-cell-options { top:0; }
+.cur-highlight .in-cell-options { top:0; }
 .trumbowyg-box, .trumbowyg-editor { margin:30px auto 0 !important; min-height:100px !important; z-index:9999; background:#fff; }
 .trumbowyg-button-pane { width:100%; z-index:99999; }
 .trumbowyg-editor { margin-top:0 !important; }

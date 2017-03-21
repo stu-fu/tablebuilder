@@ -8,10 +8,17 @@ $(function(){
         tablePathStepOne = $('<div class="table-path step-one"></div>'),
         tablePathStepTwo = $('<div class="table-path step-two"></div>');
 
+
+    // ** DRAGULA - DRAG AND DROP ** //
+
     var drake = dragula({
         isContainer: function (el) {
             return false; // only elements in drake.containers will be taken into account
-        }, direction: 'vertical' 
+        }, 
+        moves: function (el, source, handle, sibling) {
+            return handle.classList.contains('number-set');
+        },
+        direction: 'vertical' 
     });
 
 
@@ -167,12 +174,13 @@ $(function(){
                             '</div>';
 
         var customControls = '<div class="custom-controls">' +
-                                '<div class="column-controls"><h2>Column</h2><button class="button merge-group">Merge Column</button></div>' +
-                                '<div class="row-controls"><h2>Row</h2><button class="button merge-across">Merge Row</button></div>' +
+                                '<div class="column-controls"><h2>Column</h2><button class="button merge-full-column">Merge Column</button></div>' +
+                                '<div class="row-controls"><h2>Row</h2><button class="button merge-full-row">Merge Row</button></div>' +
                                 '<div class="cell-controls">' + 
                                     '<h2>Cell</h2>' +
-                                    '<button disabled class="button footnote-to-cell"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnote to Cell</button>' + 
+                                    '<button disabled class="button footnote-to-cell"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Add Footnotes to Cells</button>' + 
                                     '<div class="footnote-group"><ol></ol></div>' + 
+                                    '<button disabled class="button merge-selected"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Merge Selected Cells</button>' +
                                 '</div>' +
                              '</div>'
 
@@ -235,6 +243,8 @@ $(function(){
         });
 
 
+        /***** CELL WYSIWYG EDITING *****/
+
         function startAdvEdit(thisItem) {
             var $this = thisItem,
                 topItem = $this.parent().parent(),
@@ -269,13 +279,18 @@ $(function(){
             endAdvEdit($(this));
         });
 
+
         /***** FOOTNOTES *****/
+
+        // Trigger adding footnotes
 
         $('.add-footnotes').on('click', function () {
             $(this).attr('disabled', 'disabled').text('Footnotes');
             $('.footnote-list').append('<ol><li><input type="text" class="footnote" data-footnote="1" /><button class="add-footnote">+</button></li></ol>');
             $('#preview-table').after('<div class="table-notes"><ol></ol></div>');
         });
+
+        // Add footnote to list
 
         tableBuilder.on('click', '.add-footnote', function() {
             var $this = $(this),
@@ -298,6 +313,8 @@ $(function(){
                                                '</li>');
             }
         });
+
+        // Remove Footnote from list
 
         tableBuilder.on('click', '.remove-footnote', function () {
             $(this).closest('li').remove();
@@ -395,6 +412,67 @@ $(function(){
         });
 
 
+        /***** RANDOME COLOR *****/
+
+        function getRandomColor() {
+            var hex = Math.floor(Math.random() * 0xFFFFFF);
+            return "#" + ("000000" + hex.toString(16)).substr(-6);
+        }
+
+
+        /***** MERGE FULL ROW *****/
+
+        tableBuilder.on('click', '.merge-full-row', function(){
+            var curHighlight = $('.cur-highlight'),
+                row = curHighlight.data('row'),
+                numberInRow = $('.cell[data-row="' + row + '"]').length;
+
+            $('.cell[data-row="' + row + '"]').each(function(){
+                var $this = $(this);
+
+                if($this.hasClass('merged-col')){
+                    var col = $this.data('col');
+
+                    $('.cell[data-col="' + col + '"]').show().removeClass('merged-col, cell-hidden').attr('rowspan', '1');
+                }
+
+                if ($this.data('col') == "1") {
+                    $this.attr('colspan', numberInRow).addClass('merged-row');
+                } else {
+                    $this.hide().addClass('cell-hidden merged-row');
+                }
+            });
+
+        });
+
+
+
+        /***** MERGE FULL COLUMN *****/
+
+        tableBuilder.on('click', '.merge-full-column', function () {
+            var curHighlight = $('.cur-highlight'),
+                col = curHighlight.data('col'),
+                numberInCol = $('.cell[data-col="' + col + '"]').length;
+
+            $('.cell[data-col="' + col + '"]').each(function () {
+                var $this = $(this);
+
+                if ($this.hasClass('merged-row')) {
+                    var row = $this.data('row');
+
+                    $('.cell[data-row="' + row + '"]').show().removeClass('merged-row, cell-hidden').attr('colspan', '1');
+                }
+
+                if ($this.data('row') == "1") {
+                    $this.attr('rowspan', numberInCol).addClass('merged-col');
+                } else {
+                    $this.hide().addClass('cell-hidden merged-col');
+                }
+            });
+        });
+
+
+
         /***** MERGE ACROSS *****/
 
         $('.row-controls').on('click', '.merge-across', function (e) {
@@ -427,7 +505,7 @@ $(function(){
         /***** SHOW FOOTNOTES TO ADD *****/
         
         $('.table-builder').on('click', '.footnote-to-cell', function() {
-            $('.footnote-group').show();
+            $('.footnote-group').addClass('active');
         });
  
 
@@ -436,17 +514,15 @@ $(function(){
 
         $('.table-builder').on('click', '.add-footnote-to-cell', function() {
             var $this = $(this),
-                currentHighlight = $('.cur-highlight'),
+                currentHighlight = $('.highlighted'),
                 text = $this.prev().text(),
-                pos = $this.parent().index() + 1,
-                thisrowNum = currentHighlight.data('row'),
-                thiscolNum = currentHighlight.data('col'),
-                matchingTD = $('td[data-col="' + thiscolNum + '"][data-row="' + thisrowNum + '"]');
+                pos = $this.parent().index() + 1;
 
             currentHighlight.append('<div class="footnote-number">' + pos + '</div>');
-            matchingTD.append('<div class="footnote-number">' + pos + '</div>')
-                      .append('<div class="footnote-content">' + text + '</div>');
         });
+
+
+        /***** SAVE FOR LINKS/ABR 
 
         function removeAllRanges() {
             var range = window.getSelection().getRangeAt(0);
@@ -473,6 +549,7 @@ $(function(){
                 }
             }
         }
+        *****/
 
 
         /***** RIGHT CLICK FUNCTIONALITY *****/
@@ -494,7 +571,6 @@ $(function(){
             $('.merge-row').removeClass('merge-row');
             $('.hidden').removeClass('hidden');
             $('.cur-highlight').removeClass('cur-highlight');
-            //$('.cell:not(.highlighted) .in-cell-edit.active').trigger('click');
 
             //$('.cell-controls').hide();
             //$('.column-controls').hide();
@@ -505,36 +581,27 @@ $(function(){
                 //$this.focus();
             //}
 
-            //var wysiwygContent = $('#trumbowyg-demo').trumbowyg('html');
-            //$(this).html(wysiwygContent)
-
             switch (event.which) {
                 case 1:
                     //$('.cell-content').blur().attr('contenteditable', 'false');
                     $(this).find('.cell-content').attr('contenteditable', 'true');
-                    $this.addClass('cur-highlight');
-                    $this.addClass("highlighted");
+                    $this.addClass("cur-highlight");
 
                     if (event.shiftKey && !$this.hasClass('cellhidden')) {
                         isMouseDown = true;
                         if ($('.highlighted').length === 0) {
                             initialColPos = $this.data('col');
                             initialRowPos = $this.data('row');
-                            $this.addClass("highlighted first-highlight");
+                            $this.addClass("highlighted first-highlight cur-highlight");
                         } else {
-                            $this.addClass("highlighted");
+                            $this.addClass("highlighted cur-highlight");
                         }
                     }
                     break;
                 case 2:
                     break;
                 case 3:
-
-                    //$('.cell-controls').show();
-
-                    //if ($('.footnote-group li').length > 0) {
-                    //    $('.footnote-to-cell').show();
-                    //}
+                    // Right Click
                     break;
                 default:
             }
@@ -550,21 +617,23 @@ $(function(){
                     var mergeColBtn = $('.merge-group'),
                         mergeRowBtn = $('.merge-across');
 
+                    $('.footnote-to-cell').removeAttr('disabled');
+
                     if ($this.data('col') === initialColPos) {
                         $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
 
                         previewTable.addClass('merge-col');
 
-                        $('.column-controls').show();
-                        $('.row-controls').hide();
+                        //$('.column-controls').show();
+                        //$('.row-controls').hide();
                     } else if ($this.data('row') === initialRowPos) {
                         $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
                         $('#row' + initialRowPos).addClass('highlighted-row');
 
                         previewTable.addClass('merge-row');
 
-                        $('.column-controls').hide();
-                        $('.row-controls').show();
+                        //$('.column-controls').hide();
+                        //$('.row-controls').show();
                     } else { 
 
                     }
@@ -594,6 +663,7 @@ $(function(){
             }
         });
 
+
         function mergeCol() { }
 
 
@@ -607,6 +677,9 @@ $(function(){
                 $('.controls').show();
             }
         });
+
+
+        /***** MERGE COLUMNS *****/
 
         $('.merge-group').on('click', function (e) {
             var highlighted = $(this),
