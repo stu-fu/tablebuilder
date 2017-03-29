@@ -24,7 +24,7 @@ $(function(){
 
     // ** ADD COLUMN ** //
 
-    function addColumn() {
+    function addColumn(hasRowHeader) {
         var rowControl = builderWrap.find('.row');
 
         var colCount = $('.column').length + 1,
@@ -32,6 +32,10 @@ $(function(){
 
         var column = '<th class="column" id="col' + colCount + '"><input type="text" data-col="' + colCount + '" placeholder="Column ' + colCount + '" /></th>';
         //var columnGroup = '<col></col>';
+
+        if (hasRowHeader == true) {
+            $('.columns').append('<th class="column" id="col0"><input type="text" /></th>');
+        }
 
         $('.columns').append(column);
 
@@ -56,10 +60,12 @@ $(function(){
 
     // ** ADD ROW ** //
 
-    function addRow() {
+    function addRow(hasRowHeader) {
         var columnControl = $('.column');
         var rowCount = $('.row').length + 1;
         var row = '<tr class="row" id="row' + rowCount + '" data-tree="1" data-group="row' + rowCount + '"></tr>';
+        
+        var includeHeader = hasRowHeader;
 
         $('.rows').append(row);
 
@@ -68,6 +74,11 @@ $(function(){
         drake.containers.push(document.querySelector('#rows'));
 
         $('#row' + rowCount).append('<td class="number-set"><input type="number" value="1" min="1" max="8" /></td>');
+
+        if(hasRowHeader == true){
+            $('#row' + rowCount).append('<th class="row-head"><input type="text" /></th>');
+            var currowCount = columnControl.length - 1;
+        }
 
         for (var i = 0; i < currowCount; i++) {
             var colnum = i + 1;
@@ -125,12 +136,25 @@ $(function(){
 
         $('.start-table').on('click', function(){
             var tableTitle = $('.table-title').val();
-            var colNums = Number($('#starting-cols').val()) + 1;
-            var rowNums = Number($('#staring-rows').val()) + 1;
+
+            var colNums = Number($('#starting-cols').val()) + 1,
+                rowNums = Number($('#staring-rows').val()) + 1;
+
+            var colHeaderCheck = builderWrap.find('#has-col-headers'),
+                rowHeaderCheck = builderWrap.find('#has-row-headers');
 
             builderWrap.empty();
 
-            tableBuild({title: tableTitle, columnNumbers: colNums, rowNumbers: rowNums});
+            if (colHeaderCheck.is(':checked')) { var hasColHeaders = true }
+            if (rowHeaderCheck.is(':checked')) { var hasRowHeads = true }
+
+            tableBuild({ 
+                title: tableTitle, 
+                columnNumbers: colNums, 
+                rowNumbers: rowNums, 
+                hasRowHeaders: hasRowHeads, 
+                hasColumnHeaders: hasColHeaders 
+            });
         });
 
         $('.cell-editor').trumbowyg({
@@ -156,17 +180,20 @@ $(function(){
         var defaults = {
             title: '',
             columnNumbers: 1,
-            rowNumbers: 1
+            rowNumbers: 1,
+            hasRowHeaders: false,
+            hasColumnHeaders: true
         };
 
         var options = $.extend(defaults, opt);
 
+
         $('.stepthree').addClass('active');
         $('.table-step h1').text("Create table");
 
-        var tableBuilder = $('<div class="table-builder"></div>');
-        var rows = $('.rows');
-        var columns = $('.columns');
+        var tableBuilder = $('<div class="table-builder"></div>'),
+            rows = $('.rows'),
+            columns = $('.columns');
 
         var tableControls = '<div class="main-controls"><h2>Table Controls</h2>' + 
                                 '<button class="add-col button"><svg class="icon icon-arrow-right2"><use xlink:href="#icon-arrow-right2"></use></svg> Add Column</button>' + 
@@ -183,6 +210,7 @@ $(function(){
                                     '<button disabled class="button merge-selected"><svg class="icon icon-pushpin"><use xlink:href="#icon-pushpin"></use></svg><span class="name"> icon-pushpin</span> Merge Selected Cells</button>' +
                                 '</div>' +
                              '</div>'
+
 
         /***** Create Table Builder *****/
 
@@ -210,8 +238,33 @@ $(function(){
         $('.table-title').val(options.title).attr('disabled', 'disabled');
         $('.columns').append('<th style="background:transparent"></th>');
 
-        for (var i = 1; i < options.columnNumbers; i++) { addColumn(i); }
-        for (var i = 1; i < options.rowNumbers; i++) { addRow(i); }
+        var hasHeader = options.hasRowHeaders;
+
+        for (var i = 1; i < options.columnNumbers; i++) { addColumn(hasHeader, i); }
+        for (var i = 1; i < options.rowNumbers; i++) { addRow(hasHeader, i); }
+
+
+        /***** BUTTON CLICKS *****/
+
+        // Add Col
+        builderWrap.on('click', '.add-col', function (e) {
+            addColumn();
+        });
+
+        // Add Row
+        builderWrap.on('click', '.add-row', function (e) {
+            addRow(hasHeader);
+        });
+
+        // Save Table
+        $('.save').on('click', function () {
+            tableJSON.push(columnParent, rowParent);
+            var JSONoutput = JSON.stringify(tableJSON);
+            $('.json-output').html(JSONoutput);
+        });
+
+
+        /***** COLUMN HOVER EFFECTS *****/
 
         builderWrap.on('mouseover', '.cell', function () {
             var thisCol = $(this).data('col');
@@ -220,6 +273,9 @@ $(function(){
             var thisCol = $(this).data('col');
             $('.cell[data-col="' + thisCol + '"]').removeClass('hovered');
         });
+
+
+        /***** CHANGE ROW HIEARCHY *****/
 
         builderWrap.on('change', '.number-set input', function() {
             var $this = $(this),
@@ -267,16 +323,20 @@ $(function(){
             topItem.find('.trumbowyg-box').hide();
         }
 
-        $('.table-builder').on('click', '.in-cell-edit', function() {
-            $(this).addClass('active').hide();
-            $(this).next('.in-cell-edit-save').show();
-            startAdvEdit($(this));
+        $('.table-builder').on('click', '.in-cell-edit', function () {
+            var $this = $(this);
+
+            $this.addClass('active').hide();
+            $this.next('.in-cell-edit-save').show();
+            startAdvEdit($this);
         });
 
         $('.table-builder').on('click', '.in-cell-edit-save', function(){
-            $(this).prev('.in-cell-edit').removeClass('active').show();
-            $(this).hide();
-            endAdvEdit($(this));
+            var $this = $(this);
+
+            $this.prev('.in-cell-edit').removeClass('active').show();
+            $this.hide();
+            endAdvEdit($this);
         });
 
 
@@ -446,7 +506,6 @@ $(function(){
         });
 
 
-
         /***** MERGE FULL COLUMN *****/
 
         tableBuilder.on('click', '.merge-full-column', function () {
@@ -470,7 +529,6 @@ $(function(){
                 }
             });
         });
-
 
 
         /***** MERGE ACROSS *****/
@@ -509,7 +567,6 @@ $(function(){
         });
  
 
-
         /***** ADD FOOTNOTE TO CELL *****/
 
         $('.table-builder').on('click', '.add-footnote-to-cell', function() {
@@ -522,45 +579,10 @@ $(function(){
         });
 
 
-        /***** SAVE FOR LINKS/ABR 
-
-        function removeAllRanges() {
-            var range = window.getSelection().getRangeAt(0);
-            var node = $(range.commonAncestorContainer);
-            var nodeChild = node.find('strong');
-
-            if (node.parent().is('strong')) {
-                node.unwrap();
-            }
-        }
-
-        function surroundSelection() {
-            var span = document.createElement("strong");
-
-            if (window.getSelection) {
-                var sel = window.getSelection();
-
-                if (sel.rangeCount) {
-                    var range = sel.getRangeAt(0).cloneRange();
-
-                    range.surroundContents(span);
-                    removeAllRanges();
-                    sel.addRange(range);
-                }
-            }
-        }
-        *****/
-
-
         /***** RIGHT CLICK FUNCTIONALITY *****/
 
         var isMouseDown = false,
             initialColPos, initialRowPos;
-
-        /*$('.site-overlay').on('click', function () {
-            $('#trumbowyg-demo').hide();
-            $('.site-overlay').hide();
-        });*/
 
         $('.rows').on('mousedown', '.cell', function () {
             var $this = $(this);
@@ -572,18 +594,8 @@ $(function(){
             $('.hidden').removeClass('hidden');
             $('.cur-highlight').removeClass('cur-highlight');
 
-            //$('.cell-controls').hide();
-            //$('.column-controls').hide();
-            //$('.row-controls').hide();
-
-            //if (!$this.is(':focus')) {
-                //$this.attr('contenteditable', 'true');
-                //$this.focus();
-            //}
-
             switch (event.which) {
                 case 1:
-                    //$('.cell-content').blur().attr('contenteditable', 'false');
                     $(this).find('.cell-content').attr('contenteditable', 'true');
                     $this.addClass("cur-highlight");
 
@@ -593,9 +605,35 @@ $(function(){
                             initialColPos = $this.data('col');
                             initialRowPos = $this.data('row');
                             $this.addClass("highlighted first-highlight cur-highlight");
-                        } else {
-                            $this.addClass("highlighted cur-highlight");
-                        }
+                        } else if (highlighted.length === 1) {
+                                $this.addClass("highlighted");
+
+                                var mergeColBtn = $('.merge-group'),
+                                    mergeRowBtn = $('.merge-across');
+
+                                $('.footnote-to-cell').removeAttr('disabled');
+
+                                if ($this.data('col') === initialColPos) {
+                                    $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
+
+                                    previewTable.addClass('merge-col');
+                                } else if ($this.data('row') === initialRowPos) {
+                                    $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
+                                    $('#row' + initialRowPos).addClass('highlighted-row');
+
+                                    previewTable.addClass('merge-row');
+                                } else {
+
+                                }
+                            } else if (highlighted.length > 1) {
+                                if ($this.hasClass('highlightable')) {
+                                    $this.addClass("highlighted");
+                                }
+                            } else {
+                                $this.addClass("highlighted cur-highlight");
+                            }
+                    } else {
+                        
                     }
                     break;
                 case 2:
@@ -623,17 +661,11 @@ $(function(){
                         $('.cell[data-col="' + initialColPos + '"]').addClass('highlightable');
 
                         previewTable.addClass('merge-col');
-
-                        //$('.column-controls').show();
-                        //$('.row-controls').hide();
                     } else if ($this.data('row') === initialRowPos) {
                         $('.cell[data-row="' + initialRowPos + '"]').addClass('highlightable');
                         $('#row' + initialRowPos).addClass('highlighted-row');
 
                         previewTable.addClass('merge-row');
-
-                        //$('.column-controls').hide();
-                        //$('.row-controls').show();
                     } else { 
 
                     }
@@ -653,7 +685,6 @@ $(function(){
             switch (event.which) {
                 case 1:
                     isMouseDown = false;
-                    //$('.cell-content').blur().attr('contenteditable', 'false');
                     break;
                 case 2:
                     break;
@@ -662,9 +693,6 @@ $(function(){
                 default:
             }
         });
-
-
-        function mergeCol() { }
 
 
         /***** UPDATING CELL TEXT *****/
@@ -774,25 +802,6 @@ $(function(){
 
     tableStart();
 
-
-    /***** BUTTON CLICKS *****/
-    
-    // Add Col
-    builderWrap.on('click', '.add-col', function(e) {
-        addColumn();
-    }); 
-        
-    // Add Row
-    builderWrap.on('click', '.add-row', function(e) {
-        addRow();
-    });
-    
-    // Save Table
-    $('.save').on('click', function(){
-        tableJSON.push(columnParent, rowParent);
-        var JSONoutput = JSON.stringify(tableJSON);
-        $('.json-output').html(JSONoutput);
-    });
 
     // Show instructions
     $('.show-instructions').on('click', function(e) {
